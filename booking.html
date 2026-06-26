@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Now – I.E Outdoor Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--gold:#C9A84C;--gold-light:#E8D5A3;--dark:#1A1A1A;--charcoal:#2E2E2E;--cream:#FAF8F4;--white:#FFFFFF;--gray:#888;}
+body{font-family:'Jost',sans-serif;color:var(--dark);background:var(--dark);}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 4rem;background:rgba(26,26,26,0.97);border-bottom:1px solid rgba(201,168,76,0.2);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;letter-spacing:3px;color:var(--gold);text-decoration:none;}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{text-decoration:none;color:rgba(255,255,255,0.7);font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;transition:color 0.3s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);}
+.nav-book{background:var(--gold);color:var(--dark)!important;padding:0.5rem 1.4rem;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+.hamburger span{display:block;width:24px;height:1px;background:var(--white);}
+
+/* HERO */
+.book-hero{
+  position:relative;padding:10rem 4rem 6rem;text-align:center;overflow:hidden;
+}
+.book-hero-bg{
+  position:absolute;inset:0;
+  background-image:url('img-pro-tent-interior-2.jpg');
+  background-size:cover;background-position:center;
+  filter:brightness(0.2);
+}
+.book-hero-content{position:relative;z-index:2;}
+.section-label{font-size:0.68rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:block;}
+.book-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:300;color:var(--white);}
+.book-hero h1 em{font-style:italic;color:var(--gold-light);}
+.book-hero p{color:rgba(255,255,255,0.5);max-width:500px;margin:1.5rem auto 0;font-size:0.9rem;line-height:1.9;}
+
+/* OPTIONS */
+.booking-options{
+  padding:5rem 4rem;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;background:rgba(201,168,76,0.15);
+  max-width:1300px;margin:0 auto 0;
+}
+.booking-card{
+  background:var(--charcoal);
+  padding:3.5rem 2.5rem;
+  text-align:center;
+  transition:background 0.3s;
+  display:flex;flex-direction:column;align-items:center;
+}
+.booking-card:hover{background:#353535;}
+.booking-card.featured{background:var(--white);position:relative;}
+.booking-card.featured::before{
+  content:'RECOMMENDED';
+  position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  background:var(--gold);color:var(--dark);
+  font-size:0.6rem;letter-spacing:3px;padding:0.3rem 1rem;font-weight:500;
+}
+.card-icon{font-size:2.8rem;margin-bottom:1.5rem;}
+.booking-card h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem;font-weight:400;margin-bottom:1rem;
+}
+.booking-card:not(.featured) h3{color:var(--white);}
+.booking-card.featured h3{color:var(--dark);}
+.booking-card p{font-size:0.88rem;line-height:1.8;margin-bottom:2rem;font-weight:300;flex-grow:1;}
+.booking-card:not(.featured) p{color:rgba(255,255,255,0.5);}
+.booking-card.featured p{color:var(--gray);}
+.btn-book{
+  display:inline-block;
+  padding:1rem 2rem;font-size:0.78rem;
+  letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;font-weight:500;
+  transition:all 0.3s;width:100%;text-align:center;
+}
+.btn-gold{background:var(--gold);color:var(--dark);}
+.btn-gold:hover{background:var(--gold-light);}
+.btn-outline-dark{border:1px solid rgba(255,255,255,0.2);color:var(--white);}
+.btn-outline-dark:hover{border-color:var(--gold);color:var(--gold);}
+
+/* CONTACT FORM */
+.contact-section{
+  padding:6rem 4rem;
+  max-width:800px;margin:0 auto;
+}
+.contact-section .section-label{color:var(--gold);}
+.contact-section h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--white);margin-bottom:0.5rem;
+}
+.contact-section h2 em{font-style:italic;color:var(--gold-light);}
+.contact-section > p{color:rgba(255,255,255,0.45);font-size:0.88rem;line-height:1.9;margin-bottom:3rem;}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.form-group{display:flex;flex-direction:column;gap:0.5rem;}
+.form-group.full{grid-column:1/-1;}
+.form-group label{font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);}
+.form-group input,
+.form-group select,
+.form-group textarea{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  color:var(--white);
+  padding:1rem 1.2rem;
+  font-family:'Jost',sans-serif;font-size:0.9rem;
+  outline:none;transition:border-color 0.3s;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder{color:rgba(255,255,255,0.2);}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{border-color:var(--gold);}
+.form-group select option{background:var(--charcoal);}
+.form-group textarea{resize:vertical;min-height:140px;}
+.form-submit{
+  margin-top:2rem;
+  background:var(--gold);color:var(--dark);
+  padding:1.2rem 3rem;font-size:0.8rem;
+  letter-spacing:3px;text-transform:uppercase;
+  font-family:'Jost',sans-serif;font-weight:500;
+  border:none;cursor:pointer;transition:all 0.3s;width:100%;
+}
+.form-submit:hover{background:var(--gold-light);}
+.form-note{
+  font-size:0.75rem;color:rgba(255,255,255,0.3);
+  text-align:center;margin-top:1rem;line-height:1.7;
+}
+
+/* DIRECT CONTACT */
+.direct-contact{
+  background:var(--charcoal);
+  padding:4rem;
+  border-top:1px solid rgba(201,168,76,0.2);
+  border-bottom:1px solid rgba(201,168,76,0.2);
+}
+.direct-inner{max-width:800px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+.contact-person{padding:2.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.2);}
+.contact-person h4{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;color:var(--white);margin-bottom:0.3rem;font-weight:400;
+}
+.contact-role{font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;display:block;}
+.contact-link{
+  display:flex;align-items:center;gap:0.8rem;
+  text-decoration:none;color:rgba(255,255,255,0.6);
+  font-size:0.88rem;margin-bottom:0.8rem;
+  transition:color 0.3s;
+}
+.contact-link:hover{color:var(--gold);}
+.contact-link span:first-child{font-size:1rem;}
+
+/* FOOTER */
+footer{background:#111;padding:3rem 4rem;border-top:1px solid rgba(201,168,76,0.1);text-align:center;}
+footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;letter-spacing:1px;}
+footer a{color:var(--gold);text-decoration:none;}
+
+@media(max-width:900px){
+  nav{padding:1rem 2rem;}
+  .booking-options{grid-template-columns:1fr;padding:3rem 2rem;}
+  .form-grid{grid-template-columns:1fr;}
+  .form-group.full{grid-column:1;}
+  .direct-inner{grid-template-columns:1fr;}
+  .book-hero,.contact-section,.direct-contact{padding-left:2rem;padding-right:2rem;}
+  .nav-links{display:none;flex-direction:column;position:fixed;top:0;right:0;bottom:0;width:260px;background:var(--dark);padding:5rem 2rem 2rem;gap:2rem;z-index:300;transform:translateX(100%);transition:transform 0.3s;}
+  .nav-links.open{display:flex;transform:translateX(0);}
+  .hamburger{display:flex;z-index:400;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">I.E OUTDOOR EVENTS</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="pricing.html">Pricing & Amenities</a></li>
+    <li><a href="location.html">Location & FAQs</a></li>
+    <li><a href="booking.html" class="nav-book active">Book Now</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<div class="book-hero">
+  <div class="book-hero-bg"></div>
+  <div class="book-hero-content">
+    <span class="section-label">Let's Make It Happen</span>
+    <h1>Reserve Your<br><em>Perfect Date</em></h1>
+    <p>Three easy ways to book — choose whichever works best for you. Dates go fast on weekends.</p>
+  </div>
+</div>
+
+<!-- BOOKING OPTIONS -->
+<div style="background:var(--dark);padding:4rem 4rem 0;">
+  <div style="text-align:center;margin-bottom:3rem;">
+    <span class="section-label">Choose How to Book</span>
+  </div>
+</div>
+<div class="booking-options">
+
+  <div class="booking-card featured">
+    <div class="card-icon">✉️</div>
+    <h3>Reserve a Date Today</h3>
+    <p>Fill out the form below and we'll respond within 24 hours. Booking is on a first come, first serve basis — popular dates fill fast.</p>
+    <a href="#contact-form" class="btn-book btn-gold">Fill Out the Form ↓</a>
+  </div>
+
+  <div class="booking-card">
+    <div class="card-icon">📞</div>
+    <h3>Book Through Call/Text</h3>
+    <p>Prefer talking directly? Call or text Maria or Victor. We're responsive and happy to help you plan your event personally.</p>
+    <a href="tel:5624131124" class="btn-book btn-outline-dark">Call (562) 413-1124</a>
+  </div>
+
+  <div class="booking-card">
+    <div class="card-icon">📱</div>
+    <h3>Or Book on Peerspace</h3>
+    <p>Secure, instant booking through Peerspace. See live availability, manage your booking, and pay safely through their platform.</p>
+    <a href="https://www.peerspace.com/pages/listings/6420feabf9d022000ebd53bc" target="_blank" class="btn-book btn-outline-dark">Book on Peerspace →</a>
+  </div>
+
+</div>
+
+<!-- CONTACT FORM -->
+<section class="contact-section" id="contact-form">
+  <span class="section-label">Send a Message</span>
+  <h2>Tell Us About<br><em>Your Event</em></h2>
+  <p>Fill this out and we'll reach back within 24 hours to confirm availability and next steps. No commitment required.</p>
+
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Your Name</label>
+      <input type="text" placeholder="First & Last Name">
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input type="tel" placeholder="(xxx) xxx-xxxx">
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" placeholder="your@email.com">
+    </div>
+    <div class="form-group">
+      <label>Event Type</label>
+      <select>
+        <option value="" disabled selected>Select event type</option>
+        <option>Wedding</option>
+        <option>Birthday Party</option>
+        <option>Baby Shower</option>
+        <option>Engagement Party</option>
+        <option>Quinceañera</option>
+        <option>Corporate Event</option>
+        <option>Graduation</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Preferred Date</label>
+      <input type="date">
+    </div>
+    <div class="form-group">
+      <label>Estimated Guest Count</label>
+      <select>
+        <option value="" disabled selected>Select guest count</option>
+        <option>Under 25</option>
+        <option>25–50</option>
+        <option>50–75</option>
+        <option>75–100</option>
+        <option>100–125</option>
+        <option>125–150</option>
+      </select>
+    </div>
+    <div class="form-group full">
+      <label>Tell Us More</label>
+      <textarea placeholder="Event details, questions about add-ons, anything you'd like us to know..."></textarea>
+    </div>
+  </div>
+  <button class="form-submit" onclick="handleSubmit()">Send My Inquiry</button>
+  <p class="form-note">We'll respond within 24 hours. Prefer instant booking? Use the Peerspace link above.</p>
+</section>
+
+<!-- DIRECT CONTACT -->
+<div class="direct-contact">
+  <div style="text-align:center;margin-bottom:2rem;">
+    <span class="section-label">Or Reach Us Directly</span>
+  </div>
+  <div class="direct-inner">
+    <div class="contact-person">
+      <h4>Maria T.</h4>
+      <span class="contact-role">Co-Host & Event Coordinator</span>
+      <a href="tel:5624131124" class="contact-link"><span>📞</span><span>(562) 413-1124</span></a>
+      <a href="sms:5624131124" class="contact-link"><span>💬</span><span>Text (562) 413-1124</span></a>
+      <a href="mailto:ie.outdoorevents@gmail.com" class="contact-link"><span>✉️</span><span>ie.outdoorevents@gmail.com</span></a>
+    </div>
+    <div class="contact-person">
+      <h4>Victor T.</h4>
+      <span class="contact-role">Co-Host & Venue Manager</span>
+      <a href="tel:9096765383" class="contact-link"><span>📞</span><span>(909) 676-5383</span></a>
+      <a href="sms:9096765383" class="contact-link"><span>💬</span><span>Text (909) 676-5383</span></a>
+      <a href="mailto:ie.outdoorevents@gmail.com" class="contact-link"><span>✉️</span><span>ie.outdoorevents@gmail.com</span></a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 I.E Outdoor Events · Rialto, CA · Victor & Maria T.<br>
+  <a href="https://www.peerspace.com/pages/listings/6420feabf9d022000ebd53bc" target="_blank">View on Peerspace</a></p>
+  <p style="margin-top: 0.5rem; font-size: 0.7rem; color: rgba(255,255,255,0.15);">Website Design by <a href="https://www.ovcelevatedmarketing.com" style="color: var(--gold); text-decoration: none;">OVC Elevated Marketing</a></p>
+</footer>
+
+<script>
+const ham = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+ham.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+function handleSubmit() {
+  const btn = document.querySelector('.form-submit');
+  btn.textContent = '✓ Message Sent! We\'ll be in touch within 24 hours.';
+  btn.style.background = '#5a8a5a';
+  btn.style.cursor = 'default';
+
+  // Build mailto as fallback
+  const name = document.querySelector('input[placeholder="First & Last Name"]').value;
+  const phone = document.querySelector('input[placeholder="(xxx) xxx-xxxx"]').value;
+  const email = document.querySelector('input[placeholder="your@email.com"]').value;
+  const eventType = document.querySelector('select').value;
+  const message = document.querySelector('textarea').value;
+
+  const subject = encodeURIComponent('Event Inquiry – I.E Outdoor Events');
+  const body = encodeURIComponent(`Name: ${name}\nPhone: ${phone}\nEmail: ${email}\nEvent Type: ${eventType}\n\n${message}`);
+  window.location.href = `mailto:ie.outdoorevents@gmail.com?subject=${subject}&body=${body}`;
+}
+</script>
+</body>
+</html>

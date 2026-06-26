@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Location & FAQs – I.E Outdoor Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--gold:#C9A84C;--gold-light:#E8D5A3;--dark:#1A1A1A;--charcoal:#2E2E2E;--cream:#FAF8F4;--white:#FFFFFF;--gray:#888;}
+body{font-family:'Jost',sans-serif;color:var(--dark);background:var(--cream);}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 4rem;background:rgba(26,26,26,0.97);border-bottom:1px solid rgba(201,168,76,0.2);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;letter-spacing:3px;color:var(--gold);text-decoration:none;}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{text-decoration:none;color:rgba(255,255,255,0.7);font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;transition:color 0.3s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);}
+.nav-book{background:var(--gold);color:var(--dark)!important;padding:0.5rem 1.4rem;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+.hamburger span{display:block;width:24px;height:1px;background:var(--white);}
+
+/* HEADER */
+.page-header{padding:9rem 4rem 4rem;background:var(--dark);text-align:center;border-bottom:1px solid rgba(201,168,76,0.2);}
+.section-label{font-size:0.68rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:block;}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--white);}
+.page-header h1 em{font-style:italic;color:var(--gold-light);}
+.page-header p{color:rgba(255,255,255,0.45);font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;margin-top:1rem;}
+
+/* LOCATION SPLIT */
+.location-split{display:grid;grid-template-columns:1fr 1fr;min-height:500px;}
+.map-container{position:relative;}
+.map-container iframe{width:100%;height:100%;min-height:450px;border:none;display:block;}
+.location-info{background:var(--dark);padding:4rem;}
+.location-info .section-label{color:var(--gold);}
+.location-info h2{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--white);margin-bottom:2rem;}
+.location-info h2 em{font-style:italic;color:var(--gold-light);}
+.location-detail{
+  display:flex;gap:1.2rem;align-items:flex-start;
+  margin-bottom:1.8rem;padding-bottom:1.8rem;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.location-detail:last-child{border-bottom:none;}
+.loc-icon{font-size:1.3rem;flex-shrink:0;margin-top:0.1rem;}
+.loc-text h4{font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;}
+.loc-text p{color:rgba(255,255,255,0.55);font-size:0.9rem;line-height:1.7;}
+.loc-text a{color:var(--gold);text-decoration:none;}
+
+/* HOURS TABLE */
+.hours-section{background:var(--white);padding:5rem 4rem;}
+.hours-section .section-title{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--dark);}
+.hours-section .section-title em{font-style:italic;}
+.hours-grid{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  gap:1rem;margin-top:2.5rem;text-align:center;max-width:900px;
+}
+.hour-day{
+  padding:1.5rem 0.5rem;
+  background:var(--cream);border-bottom:3px solid transparent;
+  transition:border-color 0.3s;
+}
+.hour-day.open{border-bottom-color:var(--gold);}
+.hour-day.closed{opacity:0.4;}
+.day-name{font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:0.5rem;}
+.day-hours{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--dark);}
+.day-hours.closed-text{color:var(--gray);font-size:0.85rem;font-family:'Jost',sans-serif;}
+
+/* FAQ */
+.faq-section{padding:6rem 4rem;max-width:900px;margin:0 auto;}
+.faq-section .section-title{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;}
+.faq-section .section-title em{font-style:italic;}
+.faq-list{margin-top:3rem;}
+.faq-item{
+  border-bottom:1px solid rgba(0,0,0,0.1);
+  overflow:hidden;
+}
+.faq-question{
+  width:100%;background:none;border:none;text-align:left;
+  padding:1.8rem 0;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;color:var(--dark);font-weight:400;
+}
+.faq-question:hover{color:var(--gold);}
+.faq-icon{
+  font-size:1.5rem;color:var(--gold);
+  transition:transform 0.3s;flex-shrink:0;margin-left:1rem;
+}
+.faq-item.open .faq-icon{transform:rotate(45deg);}
+.faq-answer{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.4s ease, padding 0.4s ease;
+}
+.faq-item.open .faq-answer{max-height:500px;padding-bottom:1.5rem;}
+.faq-answer p{color:var(--gray);font-size:0.92rem;line-height:1.9;}
+
+/* FOOTER */
+footer{background:#111;padding:3rem 4rem;border-top:1px solid rgba(201,168,76,0.1);}
+.footer-inner{max-width:800px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem;}
+footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;}
+.footer-links{display:flex;gap:2rem;flex-wrap:wrap;}
+.footer-links a{color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.78rem;letter-spacing:1px;transition:color 0.3s;}
+.footer-links a:hover{color:var(--gold);}
+
+@media(max-width:900px){
+  nav{padding:1rem 2rem;}
+  .location-split{grid-template-columns:1fr;}
+  .hours-grid{grid-template-columns:repeat(4,1fr);}
+  .faq-section,.hours-section,.page-header{padding-left:2rem;padding-right:2rem;}
+  .location-info{padding:3rem 2rem;}
+  .nav-links{display:none;flex-direction:column;position:fixed;top:0;right:0;bottom:0;width:260px;background:var(--dark);padding:5rem 2rem 2rem;gap:2rem;z-index:300;transform:translateX(100%);transition:transform 0.3s;}
+  .nav-links.open{display:flex;transform:translateX(0);}
+  .hamburger{display:flex;z-index:400;}
+  .footer-inner{flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">I.E OUTDOOR EVENTS</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="pricing.html">Pricing & Amenities</a></li>
+    <li><a href="location.html" class="active">Location & FAQs</a></li>
+    <li><a href="booking.html" class="nav-book">Book Now</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="page-header">
+  <span class="section-label">Find Us</span>
+  <h1>Location &<br><em>Common Questions</em></h1>
+  <p>Rialto, CA · 6 mins from Rialto Renaissance Marketplace</p>
+</div>
+
+<!-- MAP + INFO -->
+<div class="location-split">
+  <div class="map-container">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d52920.23!2d-117.3897!3d34.1064!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c34d4c39c7f0ab%3A0x9c9b5b2b2b2b2b2b!2sRialto%2C%20CA!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+  <div class="location-info">
+    <span class="section-label">Location Details</span>
+    <h2>We're in the Heart<br>of <em>Rialto, CA</em></h2>
+    <div class="location-detail">
+      <span class="loc-icon">📍</span>
+      <div class="loc-text">
+        <h4>Address</h4>
+        <p>Rialto, CA 92376<br><em style="color:rgba(255,255,255,0.3);font-size:0.8rem;">Exact address shared upon booking confirmation</em></p>
+      </div>
+    </div>
+    <div class="location-detail">
+      <span class="loc-icon">🗺️</span>
+      <div class="loc-text">
+        <h4>Nearby</h4>
+        <p>6 minutes from Rialto Renaissance Marketplace · Easily accessible from the 210 & 10 freeway</p>
+      </div>
+    </div>
+    <div class="location-detail">
+      <span class="loc-icon">📞</span>
+      <div class="loc-text">
+        <h4>Contact</h4>
+        <p><a href="tel:5624131124">Maria: (562) 413-1124</a><br><a href="tel:9096765383">Victor: (909) 676-5383</a><br><a href="mailto:ie.outdoorevents@gmail.com">ie.outdoorevents@gmail.com</a></p>
+      </div>
+    </div>
+    <div class="location-detail">
+      <span class="loc-icon">🅿️</span>
+      <div class="loc-text">
+        <h4>Parking</h4>
+        <p>Street parking available nearby. Details provided upon booking.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOURS -->
+<section class="hours-section">
+  <span class="section-label">When We're Available</span>
+  <h2 class="section-title">Operating<br><em>Hours</em></h2>
+  <div class="hours-grid">
+    <div class="hour-day closed">
+      <div class="day-name">Mon</div>
+      <div class="day-hours closed-text">Closed</div>
+    </div>
+    <div class="hour-day closed">
+      <div class="day-name">Tue</div>
+      <div class="day-hours closed-text">Closed</div>
+    </div>
+    <div class="hour-day closed">
+      <div class="day-name">Wed</div>
+      <div class="day-hours closed-text">Closed</div>
+    </div>
+    <div class="hour-day closed">
+      <div class="day-name">Thu</div>
+      <div class="day-hours closed-text">Closed</div>
+    </div>
+    <div class="hour-day open">
+      <div class="day-name">Fri</div>
+      <div class="day-hours">6AM–12AM</div>
+    </div>
+    <div class="hour-day open">
+      <div class="day-name">Sat</div>
+      <div class="day-hours">6AM–12AM</div>
+    </div>
+    <div class="hour-day open">
+      <div class="day-name">Sun</div>
+      <div class="day-hours">6AM–12AM</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <span class="section-label">Common Questions</span>
+  <h2 class="section-title">Everything You<br><em>Need to Know</em></h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question">How do I book the venue?<span class="faq-icon">+</span></button>
+      <div class="faq-answer"><p>You can book directly through our Peerspace listing, send us an email at ie.outdoorevents@gmail.com, or call/text Maria at (562) 413-1124 or Victor at (909) 676-5383. We're happy to walk you through availability and options.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">What is the minimum booking time?<span class="faq-icon">+</span></button>
+      <div class="faq-answer"><p>The minimum booking is 4 hours at $195/hr. You can extend your booking as needed — just let us know in advance so we can confirm availability.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Can I bring my own catering or food vendors?<span class="faq-icon">+</span></button>
+      <div class="faq-answer"><p>Absolutely. Taco trucks and outside bartenders are both welcome. You can arrange your own catering with any vendor you choose. We also have food warmers available as an add-on.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">What happens if it rains?<span class="faq-icon">+</span></button>
+      <div class="faq-answer"><p>The venue has a large covered patio that protects a significant portion of the space. For full coverage, we recommend adding the 20×40 canopy as an add-on. The host is not responsible for weather-related issues, so planning ahead is key.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Is alcohol allowed at events?<span class="faq-icon">+</span></button>
+      <div class="faq-answer"><p>Yes, alcoholic beverages are permitted. You're welcome to bring your own bartender or beverage service. We have a full-size refrigerator and two large coolers available to keep everything cold.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Is the host present during my event?<span class="faq-icon">+</span></button>
+      <div class="faq-answer"><p>Victor or Maria can be available on-site during your event if needed. They're hands-on hosts who want your event to go smoothly, so don't hesitate to request their presence.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">What is the cancellation policy?<span class="faq-icon">+</span></button>
+      <div class="faq-answer"><p>Standard 90-day policy: full refund if cancelled 90+ days before the event. 50% refund (excluding fees) if cancelled 14–90 days out. No refund within 14 days. Bookings cancelled within 24 hours of confirmation but at least 48 hours before the event receive a full refund (Grace Period policy).</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Do you allow flyer parties or ticketed events?<span class="faq-icon">+</span></button>
+      <div class="faq-answer"><p>No. Flyer parties and events that charge an entrance fee are not permitted. I.E Outdoor Events is a private venue for private events only.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">How far is the venue from major landmarks?<span class="faq-icon">+</span></button>
+      <div class="faq-answer"><p>We're about 6 minutes from the Rialto Renaissance Marketplace, easily accessible from the 210 and 10 freeways. The exact address is provided after booking confirmation.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <p>© 2025 I.E Outdoor Events · Rialto, CA</p>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="booking.html">Book Now</a>
+    </div>
+  </div>
+  <p style="margin-top: 1rem; font-size: 0.7rem; color: rgba(255,255,255,0.15); text-align:center;">Website Design by <a href="https://www.ovcelevatedmarketing.com" style="color: var(--gold); text-decoration: none;">OVC Elevated Marketing</a></p>
+</footer>
+
+<script>
+const ham = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+ham.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>

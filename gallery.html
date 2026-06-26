@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery – I.E Outdoor Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--gold:#C9A84C;--gold-light:#E8D5A3;--dark:#1A1A1A;--charcoal:#2E2E2E;--cream:#FAF8F4;--white:#FFFFFF;--gray:#888;}
+html{scroll-behavior:smooth;}
+body{font-family:'Jost',sans-serif;color:var(--dark);background:var(--dark);}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 4rem;background:rgba(26,26,26,0.95);border-bottom:1px solid rgba(201,168,76,0.2);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;letter-spacing:3px;color:var(--gold);text-decoration:none;}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{text-decoration:none;color:rgba(255,255,255,0.7);font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;transition:color 0.3s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);}
+.nav-book{background:var(--gold);color:var(--dark)!important;padding:0.5rem 1.4rem;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+.hamburger span{display:block;width:24px;height:1px;background:var(--white);}
+
+/* HEADER */
+.page-header{
+  padding:10rem 4rem 4rem;text-align:center;
+  background:linear-gradient(to bottom,var(--dark),var(--charcoal));
+  border-bottom:1px solid rgba(201,168,76,0.2);
+}
+.page-header .section-label{font-size:0.68rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:block;}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:300;color:var(--white);}
+.page-header h1 em{font-style:italic;color:var(--gold-light);}
+.page-header p{color:rgba(255,255,255,0.5);font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;margin-top:1rem;}
+
+/* FILTER TABS */
+.filter-bar{
+  display:flex;justify-content:center;gap:0.5rem;
+  padding:2rem 4rem;background:var(--charcoal);
+  border-bottom:1px solid rgba(201,168,76,0.1);flex-wrap:wrap;
+}
+.filter-btn{
+  background:none;border:1px solid rgba(255,255,255,0.15);
+  color:rgba(255,255,255,0.5);padding:0.6rem 1.5rem;
+  font-family:'Jost',sans-serif;font-size:0.72rem;letter-spacing:2px;
+  text-transform:uppercase;cursor:pointer;transition:all 0.3s;
+}
+.filter-btn:hover,.filter-btn.active{
+  border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.08);
+}
+
+/* MASONRY GALLERY */
+.gallery-container{padding:3rem 2rem;max-width:1600px;margin:0 auto;}
+.masonry{
+  columns:4;column-gap:16px;
+}
+.gallery-item{
+  break-inside:avoid;margin-bottom:16px;
+  position:relative;overflow:hidden;cursor:pointer;display:block;
+}
+.gallery-item img{
+  width:100%;display:block;
+  transition:transform 0.5s ease;
+}
+.gallery-item:hover img{transform:scale(1.04);}
+.gallery-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 60%);
+  opacity:0;transition:opacity 0.3s;
+  display:flex;align-items:flex-end;padding:1.5rem;
+}
+.gallery-item:hover .gallery-overlay{opacity:1;}
+.overlay-label{
+  font-size:0.72rem;letter-spacing:2px;
+  text-transform:uppercase;color:var(--gold);font-weight:500;
+}
+
+/* LIGHTBOX */
+.lightbox{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.95);z-index:1000;
+  align-items:center;justify-content:center;
+}
+.lightbox.open{display:flex;}
+.lb-inner{position:relative;max-width:90vw;max-height:90vh;}
+.lb-inner img{max-width:100%;max-height:90vh;object-fit:contain;display:block;}
+.lb-close{
+  position:fixed;top:2rem;right:2rem;
+  background:none;border:1px solid rgba(255,255,255,0.3);
+  color:var(--white);width:44px;height:44px;
+  font-size:1.2rem;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;
+}
+.lb-close:hover{border-color:var(--gold);color:var(--gold);}
+.lb-nav{
+  position:fixed;top:50%;transform:translateY(-50%);
+  background:none;border:1px solid rgba(255,255,255,0.2);
+  color:var(--white);width:50px;height:50px;
+  font-size:1.2rem;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;
+}
+.lb-nav:hover{border-color:var(--gold);color:var(--gold);}
+.lb-prev{left:2rem;}
+.lb-next{right:2rem;}
+
+/* CTA */
+.gallery-cta{
+  text-align:center;padding:5rem 2rem;
+  background:var(--charcoal);border-top:1px solid rgba(201,168,76,0.2);
+}
+.gallery-cta h2{font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:var(--white);font-weight:300;margin-bottom:1rem;}
+.gallery-cta h2 em{font-style:italic;color:var(--gold-light);}
+.gallery-cta p{color:rgba(255,255,255,0.5);margin-bottom:2rem;}
+.btn-primary{display:inline-block;background:var(--gold);color:var(--dark);padding:1rem 2.8rem;font-size:0.78rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;font-weight:500;transition:all 0.3s;}
+.btn-primary:hover{background:var(--gold-light);}
+
+/* FOOTER */
+footer{background:#111;padding:2rem 4rem;border-top:1px solid rgba(201,168,76,0.1);text-align:center;}
+footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;letter-spacing:1px;}
+
+@media(max-width:1200px){.masonry{columns:3;}}
+@media(max-width:900px){
+  nav{padding:1rem 2rem;}
+  .masonry{columns:2;}
+  .page-header{padding:8rem 2rem 3rem;}
+  .filter-bar{padding:1.5rem 2rem;}
+  .nav-links{display:none;flex-direction:column;position:fixed;top:0;right:0;bottom:0;width:260px;background:var(--dark);padding:5rem 2rem 2rem;gap:2rem;z-index:300;transform:translateX(100%);transition:transform 0.3s;}
+  .nav-links.open{display:flex;transform:translateX(0);}
+  .hamburger{display:flex;z-index:400;}
+}
+@media(max-width:600px){.masonry{columns:1;}.gallery-container{padding:2rem 1rem;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">I.E OUTDOOR EVENTS</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html" class="active">Gallery</a></li>
+    <li><a href="pricing.html">Pricing & Amenities</a></li>
+    <li><a href="location.html">Location & FAQs</a></li>
+    <li><a href="booking.html" class="nav-book">Book Now</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="page-header">
+  <span class="section-label">Browse the Space</span>
+  <h1>The Gallery —<br><em>See It to Believe It</em></h1>
+  <p>Real events · Real moments · Real venue</p>
+</div>
+
+
+<div class="gallery-container">
+  <div class="masonry" id="masonryGrid">
+
+    <div class="gallery-item" data-cat="wedding" data-src="img-pro-ceremony-backdrop.jpg">
+      <img src="img-pro-ceremony-backdrop.jpg" alt="Sweet 16 ceremony backdrop with floral wall">
+      <div class="gallery-overlay"><span class="overlay-label">Ceremony Backdrop</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="venue" data-src="img-pro-wedding-arch.jpg">
+      <img src="img-pro-wedding-arch.jpg" alt="Full venue wedding setup">
+      <div class="gallery-overlay"><span class="overlay-label">Full Venue Setup</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="celebration" data-src="img-pro-tent-overhead.jpg">
+      <img src="img-pro-tent-overhead.jpg" alt="Elegant tent interior overhead">
+      <div class="gallery-overlay"><span class="overlay-label">Tent Interior</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="lounge" data-src="img-pro-pergola-drape.jpg">
+      <img src="img-pro-pergola-drape.jpg" alt="Luxury pergola with white draping">
+      <div class="gallery-overlay"><span class="overlay-label">Pergola Lounge</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="celebration" data-src="img-pro-tent-interior-2.jpg">
+      <img src="img-pro-tent-interior-2.jpg" alt="Formal dining under elegant tent">
+      <div class="gallery-overlay"><span class="overlay-label">Formal Dining</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="wedding" data-src="img-pro-floral-arch.jpg">
+      <img src="img-pro-floral-arch.jpg" alt="Floral arch entrance">
+      <div class="gallery-overlay"><span class="overlay-label">Floral Arch Entry</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="venue" data-src="img-pro-formal-dining.jpg">
+      <img src="img-pro-formal-dining.jpg" alt="Wide formal dining setup">
+      <div class="gallery-overlay"><span class="overlay-label">Dining Setup</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="lounge" data-src="img-gazebo-lounge-day.jpg">
+      <img src="img-gazebo-lounge-day.jpg" alt="Gazebo lounge daytime">
+      <div class="gallery-overlay"><span class="overlay-label">Gazebo Lounge</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="celebration" data-src="img-tent-dining-gold.jpg">
+      <img src="img-tent-dining-gold.jpg" alt="Gold charger formal table setting">
+      <div class="gallery-overlay"><span class="overlay-label">Gold Table Setting</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="venue" data-src="img-pro-covered-afternoon.jpg">
+      <img src="img-pro-covered-afternoon.jpg" alt="Covered patio full view">
+      <div class="gallery-overlay"><span class="overlay-label">Covered Patio</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="celebration" data-src="img-pro-tent-interior-1.jpg">
+      <img src="img-pro-tent-interior-1.jpg" alt="Inside canopy event space">
+      <div class="gallery-overlay"><span class="overlay-label">Canopy Interior</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="lounge" data-src="img-lounge-seating-closeup.jpg">
+      <img src="img-lounge-seating-closeup.jpg" alt="Outdoor lounge seating detail">
+      <div class="gallery-overlay"><span class="overlay-label">Lounge Detail</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="wedding" data-src="img-pro-table-closeup.jpg">
+      <img src="img-pro-table-closeup.jpg" alt="Long table gold charger closeup">
+      <div class="gallery-overlay"><span class="overlay-label">Table Detail</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="venue" data-src="img-pro-venue-scale.jpg">
+      <img src="img-pro-venue-scale.jpg" alt="Venue scale and layout">
+      <div class="gallery-overlay"><span class="overlay-label">Venue Overview</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="celebration" data-src="img-evening-tv-patio.jpg">
+      <img src="img-evening-tv-patio.jpg" alt="Evening patio with TV and guests">
+      <div class="gallery-overlay"><span class="overlay-label">Evening Event</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="lounge" data-src="img-lounge-gazebo-1.jpg">
+      <img src="img-lounge-gazebo-1.jpg" alt="Gazebo with speakers and cooler setup">
+      <div class="gallery-overlay"><span class="overlay-label">Amenities View</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="venue" data-src="img-pro-patio-catering.jpg">
+      <img src="img-pro-patio-catering.jpg" alt="Catering and patio setup">
+      <div class="gallery-overlay"><span class="overlay-label">Catering Area</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="wedding" data-src="img-venue-wide-wedding.jpg">
+      <img src="img-venue-wide-wedding.jpg" alt="Full venue wedding day panorama">
+      <div class="gallery-overlay"><span class="overlay-label">Wedding Day</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="lounge" data-src="img-restroom-both.jpg">
+      <img src="img-restroom-both.jpg" alt="Two private restrooms">
+      <div class="gallery-overlay"><span class="overlay-label">Private Restrooms</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="wedding" data-src="img-pro-entry-pathway.jpg">
+      <img src="img-pro-entry-pathway.jpg" alt="Entry pathway with floral arch">
+      <div class="gallery-overlay"><span class="overlay-label">Event Entry</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="gallery-cta">
+  <h2>Ready to Create Your<br><em>Own Memories Here?</em></h2>
+  <p>Available Fri–Sun · Up to 150 guests · Starting at $195/hr</p>
+  <a href="booking.html" class="btn-primary">Book Your Date</a>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose">✕</button>
+  <button class="lb-nav lb-prev" id="lbPrev">‹</button>
+  <div class="lb-inner">
+    <img id="lbImage" src="" alt="">
+  </div>
+  <button class="lb-nav lb-next" id="lbNext">›</button>
+</div>
+
+<footer>
+  <p>© 2025 I.E Outdoor Events · Rialto, CA · <a href="booking.html" style="color:var(--gold);text-decoration:none;">Book Now</a></p>
+  <p style="margin-top: 0.5rem; font-size: 0.7rem; color: rgba(255,255,255,0.15);">Website Design by <a href="https://www.ovcelevatedmarketing.com" style="color: var(--gold); text-decoration: none;">OVC Elevated Marketing</a></p>
+</footer>
+
+<script>
+const ham = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+ham.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+// Lightbox
+const lb = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImage');
+let visibleItems = [], currentIdx = 0;
+
+function getVisible(){ return [...items].filter(i => i.style.display !== 'none'); }
+function openLb(idx){
+  visibleItems = getVisible();
+  currentIdx = idx;
+  lbImg.src = visibleItems[currentIdx].dataset.src;
+  lb.classList.add('open');
+}
+function closeLb(){ lb.classList.remove('open'); }
+
+items.forEach((item, i) => {
+  item.addEventListener('click', () => {
+    visibleItems = getVisible();
+    openLb(visibleItems.indexOf(item));
+  });
+});
+
+document.getElementById('lbClose').addEventListener('click', closeLb);
+document.getElementById('lbPrev').addEventListener('click', () => {
+  currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length;
+  lbImg.src = visibleItems[currentIdx].dataset.src;
+});
+document.getElementById('lbNext').addEventListener('click', () => {
+  currentIdx = (currentIdx + 1) % visibleItems.length;
+  lbImg.src = visibleItems[currentIdx].dataset.src;
+});
+lb.addEventListener('click', e => { if(e.target === lb) closeLb(); });
+document.addEventListener('keydown', e => {
+  if(!lb.classList.contains('open')) return;
+  if(e.key === 'Escape') closeLb();
+  if(e.key === 'ArrowLeft') document.getElementById('lbPrev').click();
+  if(e.key === 'ArrowRight') document.getElementById('lbNext').click();
+});
+</script>
+</body>
+</html>
