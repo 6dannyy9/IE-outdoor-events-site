@@ -16,8 +16,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .nav-links a{text-decoration:none;color:rgba(255,255,255,0.7);font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;transition:color 0.3s;}
 .nav-links a:hover,.nav-links a.active{color:var(--gold);}
 .nav-book{background:var(--gold);color:var(--dark)!important;padding:0.5rem 1.4rem;}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
-.hamburger span{display:block;width:24px;height:1px;background:var(--white);}
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:6px;cursor:pointer;background:none;border:none;padding:6px;width:40px;height:40px;z-index:400;}
+.hamburger span{display:block;width:25px;height:2px;background:var(--white);border-radius:2px;transition:transform 0.35s ease,opacity 0.25s ease;}
+.hamburger.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+.nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);opacity:0;visibility:hidden;transition:opacity 0.35s ease;z-index:250;}
+.nav-overlay.show{opacity:1;visibility:visible;}
+
+/* PAGE TRANSITIONS + SCROLL REVEAL */
+@keyframes pageIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+body{animation:pageIn 0.6s ease both;}
+html.js .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s ease;}
+html.js .reveal.in{opacity:1;transform:none;}
 
 /* HEADER */
 .page-header{
@@ -114,17 +125,34 @@ footer{background:#111;padding:2rem 4rem;border-top:1px solid rgba(201,168,76,0.
 footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;letter-spacing:1px;}
 
 @media(max-width:1200px){.masonry{columns:3;}}
+@media(max-width:1024px){
+  nav{padding:1rem 1.8rem;}
+  /* Slide-out nav */
+  .hamburger{display:flex;}
+  .nav-links{
+    flex-direction:column;align-items:flex-start;position:fixed;
+    top:0;right:0;bottom:0;width:min(320px,82vw);
+    background:var(--dark);padding:6rem 2.2rem 2rem;gap:1.8rem;
+    z-index:300;transform:translateX(100%);
+    transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    box-shadow:-20px 0 60px rgba(0,0,0,0.4);overflow-y:auto;
+  }
+  .nav-links.open{transform:translateX(0);}
+  .nav-links a{font-size:0.95rem;color:rgba(255,255,255,0.85);}
+  .nav-book{padding:0.7rem 1.6rem;}
+}
 @media(max-width:900px){
-  nav{padding:1rem 2rem;}
   .masonry{columns:2;}
   .page-header{padding:8rem 2rem 3rem;}
   .filter-bar{padding:1.5rem 2rem;}
-  .nav-links{display:none;flex-direction:column;position:fixed;top:0;right:0;bottom:0;width:260px;background:var(--dark);padding:5rem 2rem 2rem;gap:2rem;z-index:300;transform:translateX(100%);transition:transform 0.3s;}
-  .nav-links.open{display:flex;transform:translateX(0);}
-  .hamburger{display:flex;z-index:400;}
 }
 @media(max-width:600px){.masonry{columns:1;}.gallery-container{padding:2rem 1rem;}}
+@media(max-width:420px){
+  nav{padding:1rem 1.2rem;}
+  .nav-logo{font-size:1.15rem;letter-spacing:2px;}
+}
 </style>
+<script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 
@@ -137,12 +165,13 @@ footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;letter-spacing:1px;}
     <li><a href="location.html">Location & FAQs</a></li>
     <li><a href="booking.html" class="nav-book">Book Now</a></li>
   </ul>
-  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
+<div class="nav-overlay" id="navOverlay"></div>
 
 <div class="page-header">
   <span class="section-label">Browse the Space</span>
-  <h1>The Gallery —<br><em>See It to Believe It</em></h1>
+  <h1>The <em>Gallery</em></h1>
   <p>Real events · Real moments · Real venue</p>
 </div>
 
@@ -150,49 +179,10 @@ footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;letter-spacing:1px;}
 <div class="gallery-container">
   <div class="masonry" id="masonryGrid">
 
-    <div class="gallery-item" data-cat="wedding" data-src="img-pro-ceremony-backdrop.jpg">
-      <img src="img-pro-ceremony-backdrop.jpg" alt="Sweet 16 ceremony backdrop with floral wall">
-      <div class="gallery-overlay"><span class="overlay-label">Ceremony Backdrop</span></div>
-    </div>
-
-    <div class="gallery-item" data-cat="venue" data-src="img-pro-wedding-arch.jpg">
-      <img src="img-pro-wedding-arch.jpg" alt="Full venue wedding setup">
-      <div class="gallery-overlay"><span class="overlay-label">Full Venue Setup</span></div>
-    </div>
-
-    <div class="gallery-item" data-cat="celebration" data-src="img-pro-tent-overhead.jpg">
-      <img src="img-pro-tent-overhead.jpg" alt="Elegant tent interior overhead">
-      <div class="gallery-overlay"><span class="overlay-label">Tent Interior</span></div>
-    </div>
-
-    <div class="gallery-item" data-cat="lounge" data-src="img-pro-pergola-drape.jpg">
-      <img src="img-pro-pergola-drape.jpg" alt="Luxury pergola with white draping">
-      <div class="gallery-overlay"><span class="overlay-label">Pergola Lounge</span></div>
-    </div>
-
-    <div class="gallery-item" data-cat="celebration" data-src="img-pro-tent-interior-2.jpg">
-      <img src="img-pro-tent-interior-2.jpg" alt="Formal dining under elegant tent">
-      <div class="gallery-overlay"><span class="overlay-label">Formal Dining</span></div>
-    </div>
-
-    <div class="gallery-item" data-cat="wedding" data-src="img-pro-floral-arch.jpg">
-      <img src="img-pro-floral-arch.jpg" alt="Floral arch entrance">
-      <div class="gallery-overlay"><span class="overlay-label">Floral Arch Entry</span></div>
-    </div>
-
-    <div class="gallery-item" data-cat="venue" data-src="img-pro-formal-dining.jpg">
-      <img src="img-pro-formal-dining.jpg" alt="Wide formal dining setup">
-      <div class="gallery-overlay"><span class="overlay-label">Dining Setup</span></div>
-    </div>
-
-    <div class="gallery-item" data-cat="lounge" data-src="img-gazebo-lounge-day.jpg">
-      <img src="img-gazebo-lounge-day.jpg" alt="Gazebo lounge daytime">
-      <div class="gallery-overlay"><span class="overlay-label">Gazebo Lounge</span></div>
-    </div>
-
-    <div class="gallery-item" data-cat="celebration" data-src="img-tent-dining-gold.jpg">
-      <img src="img-tent-dining-gold.jpg" alt="Gold charger formal table setting">
-      <div class="gallery-overlay"><span class="overlay-label">Gold Table Setting</span></div>
+    <!-- GROUP 1 · Wide venue overviews -->
+    <div class="gallery-item" data-cat="venue" data-src="img-pro-venue-scale.jpg">
+      <img src="img-pro-venue-scale.jpg" alt="Venue scale and layout">
+      <div class="gallery-overlay"><span class="overlay-label">Venue Overview</span></div>
     </div>
 
     <div class="gallery-item" data-cat="venue" data-src="img-pro-covered-afternoon.jpg">
@@ -200,34 +190,14 @@ footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;letter-spacing:1px;}
       <div class="gallery-overlay"><span class="overlay-label">Covered Patio</span></div>
     </div>
 
-    <div class="gallery-item" data-cat="celebration" data-src="img-pro-tent-interior-1.jpg">
-      <img src="img-pro-tent-interior-1.jpg" alt="Inside canopy event space">
-      <div class="gallery-overlay"><span class="overlay-label">Canopy Interior</span></div>
+    <div class="gallery-item" data-cat="venue" data-src="img-venue-wide-wedding.jpg">
+      <img src="img-venue-wide-wedding.jpg" alt="Full venue wedding day panorama">
+      <div class="gallery-overlay"><span class="overlay-label">Full Venue</span></div>
     </div>
 
-    <div class="gallery-item" data-cat="lounge" data-src="img-lounge-seating-closeup.jpg">
-      <img src="img-lounge-seating-closeup.jpg" alt="Outdoor lounge seating detail">
-      <div class="gallery-overlay"><span class="overlay-label">Lounge Detail</span></div>
-    </div>
-
-    <div class="gallery-item" data-cat="wedding" data-src="img-pro-table-closeup.jpg">
-      <img src="img-pro-table-closeup.jpg" alt="Long table gold charger closeup">
-      <div class="gallery-overlay"><span class="overlay-label">Table Detail</span></div>
-    </div>
-
-    <div class="gallery-item" data-cat="venue" data-src="img-pro-venue-scale.jpg">
-      <img src="img-pro-venue-scale.jpg" alt="Venue scale and layout">
-      <div class="gallery-overlay"><span class="overlay-label">Venue Overview</span></div>
-    </div>
-
-    <div class="gallery-item" data-cat="celebration" data-src="img-evening-tv-patio.jpg">
-      <img src="img-evening-tv-patio.jpg" alt="Evening patio with TV and guests">
-      <div class="gallery-overlay"><span class="overlay-label">Evening Event</span></div>
-    </div>
-
-    <div class="gallery-item" data-cat="lounge" data-src="img-lounge-gazebo-1.jpg">
-      <img src="img-lounge-gazebo-1.jpg" alt="Gazebo with speakers and cooler setup">
-      <div class="gallery-overlay"><span class="overlay-label">Amenities View</span></div>
+    <div class="gallery-item" data-cat="venue" data-src="img-pro-wedding-arch.jpg">
+      <img src="img-pro-wedding-arch.jpg" alt="Full venue wedding setup">
+      <div class="gallery-overlay"><span class="overlay-label">Full Venue Setup</span></div>
     </div>
 
     <div class="gallery-item" data-cat="venue" data-src="img-pro-patio-catering.jpg">
@@ -235,14 +205,72 @@ footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;letter-spacing:1px;}
       <div class="gallery-overlay"><span class="overlay-label">Catering Area</span></div>
     </div>
 
-    <div class="gallery-item" data-cat="wedding" data-src="img-venue-wide-wedding.jpg">
-      <img src="img-venue-wide-wedding.jpg" alt="Full venue wedding day panorama">
-      <div class="gallery-overlay"><span class="overlay-label">Wedding Day</span></div>
+    <div class="gallery-item" data-cat="venue" data-src="img-evening-tv-patio.jpg">
+      <img src="img-evening-tv-patio.jpg" alt="Evening patio with TV and guests">
+      <div class="gallery-overlay"><span class="overlay-label">Evening Event</span></div>
     </div>
 
-    <div class="gallery-item" data-cat="lounge" data-src="img-restroom-both.jpg">
-      <img src="img-restroom-both.jpg" alt="Two private restrooms">
-      <div class="gallery-overlay"><span class="overlay-label">Private Restrooms</span></div>
+    <!-- GROUP 2 · Gazebo & lounge -->
+    <div class="gallery-item" data-cat="lounge" data-src="img-pro-pergola-drape.jpg">
+      <img src="img-pro-pergola-drape.jpg" alt="Luxury pergola with white draping">
+      <div class="gallery-overlay"><span class="overlay-label">Pergola Lounge</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="lounge" data-src="img-gazebo-lounge-day.jpg">
+      <img src="img-gazebo-lounge-day.jpg" alt="Gazebo lounge daytime">
+      <div class="gallery-overlay"><span class="overlay-label">Gazebo Lounge</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="lounge" data-src="img-lounge-gazebo-1.jpg">
+      <img src="img-lounge-gazebo-1.jpg" alt="Gazebo with speakers and cooler setup">
+      <div class="gallery-overlay"><span class="overlay-label">Amenities View</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="lounge" data-src="img-lounge-seating-closeup.jpg">
+      <img src="img-lounge-seating-closeup.jpg" alt="Outdoor lounge seating detail">
+      <div class="gallery-overlay"><span class="overlay-label">Lounge Detail</span></div>
+    </div>
+
+    <!-- GROUP 3 · Formal dining & tables -->
+    <div class="gallery-item" data-cat="celebration" data-src="img-pro-tent-overhead.jpg">
+      <img src="img-pro-tent-overhead.jpg" alt="Elegant tent interior overhead">
+      <div class="gallery-overlay"><span class="overlay-label">Tent Interior</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="celebration" data-src="img-pro-tent-interior-2.jpg">
+      <img src="img-pro-tent-interior-2.jpg" alt="Formal dining under elegant tent">
+      <div class="gallery-overlay"><span class="overlay-label">Formal Dining</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="celebration" data-src="img-pro-tent-interior-1.jpg">
+      <img src="img-pro-tent-interior-1.jpg" alt="Inside the elegant tented event space">
+      <div class="gallery-overlay"><span class="overlay-label">Tented Dining</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="venue" data-src="img-pro-formal-dining.jpg">
+      <img src="img-pro-formal-dining.jpg" alt="Wide formal dining setup">
+      <div class="gallery-overlay"><span class="overlay-label">Dining Setup</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="celebration" data-src="img-tent-dining-gold.jpg">
+      <img src="img-tent-dining-gold.jpg" alt="Gold charger formal table setting">
+      <div class="gallery-overlay"><span class="overlay-label">Gold Table Setting</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="wedding" data-src="img-pro-table-closeup.jpg">
+      <img src="img-pro-table-closeup.jpg" alt="Long table gold charger closeup">
+      <div class="gallery-overlay"><span class="overlay-label">Table Detail</span></div>
+    </div>
+
+    <!-- GROUP 4 · Ceremony & floral backdrops -->
+    <div class="gallery-item" data-cat="wedding" data-src="img-pro-ceremony-backdrop.jpg">
+      <img src="img-pro-ceremony-backdrop.jpg" alt="Ceremony backdrop with floral wall">
+      <div class="gallery-overlay"><span class="overlay-label">Ceremony Backdrop</span></div>
+    </div>
+
+    <div class="gallery-item" data-cat="wedding" data-src="img-pro-floral-arch.jpg">
+      <img src="img-pro-floral-arch.jpg" alt="Floral arch entrance">
+      <div class="gallery-overlay"><span class="overlay-label">Floral Arch Entry</span></div>
     </div>
 
     <div class="gallery-item" data-cat="wedding" data-src="img-pro-entry-pathway.jpg">
@@ -250,13 +278,19 @@ footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;letter-spacing:1px;}
       <div class="gallery-overlay"><span class="overlay-label">Event Entry</span></div>
     </div>
 
+    <!-- GROUP 5 · Restroom & details -->
+    <div class="gallery-item" data-cat="lounge" data-src="img-restroom-both.jpg">
+      <img src="img-restroom-both.jpg" alt="Two private restrooms">
+      <div class="gallery-overlay"><span class="overlay-label">Private Restrooms</span></div>
+    </div>
+
   </div>
 </div>
 
 <!-- CTA -->
-<div class="gallery-cta">
+<div class="gallery-cta reveal">
   <h2>Ready to Create Your<br><em>Own Memories Here?</em></h2>
-  <p>Available Fri–Sun · Up to 150 guests · Starting at $195/hr</p>
+  <p>Open 7 days a week · Up to 150 guests</p>
   <a href="booking.html" class="btn-primary">Book Your Date</a>
 </div>
 
@@ -276,25 +310,51 @@ footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;letter-spacing:1px;}
 </footer>
 
 <script>
+// Hamburger / slide-out nav
 const ham = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
-ham.addEventListener('click', () => navLinks.classList.toggle('open'));
+const navOverlay = document.getElementById('navOverlay');
+function setNav(open){
+  navLinks.classList.toggle('open', open);
+  ham.classList.toggle('open', open);
+  navOverlay.classList.toggle('show', open);
+  ham.setAttribute('aria-expanded', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+ham.addEventListener('click', () => setNav(!navLinks.classList.contains('open')));
+navOverlay.addEventListener('click', () => setNav(false));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNav(false)));
+
+// Scroll reveal
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 // Lightbox
+const items = Array.from(document.querySelectorAll('.gallery-item'));
 const lb = document.getElementById('lightbox');
 const lbImg = document.getElementById('lbImage');
 let visibleItems = [], currentIdx = 0;
 
-function getVisible(){ return [...items].filter(i => i.style.display !== 'none'); }
+function getVisible(){ return items.filter(i => i.style.display !== 'none'); }
+function showCurrent(){
+  const item = visibleItems[currentIdx];
+  lbImg.src = item.dataset.src;
+  lbImg.alt = item.querySelector('img') ? item.querySelector('img').alt : '';
+}
 function openLb(idx){
   visibleItems = getVisible();
   currentIdx = idx;
-  lbImg.src = visibleItems[currentIdx].dataset.src;
+  showCurrent();
   lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
-function closeLb(){ lb.classList.remove('open'); }
+function closeLb(){ lb.classList.remove('open'); document.body.style.overflow = ''; }
+function nextImg(){ currentIdx = (currentIdx + 1) % visibleItems.length; showCurrent(); }
+function prevImg(){ currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length; showCurrent(); }
 
-items.forEach((item, i) => {
+items.forEach(item => {
   item.addEventListener('click', () => {
     visibleItems = getVisible();
     openLb(visibleItems.indexOf(item));
@@ -302,21 +362,31 @@ items.forEach((item, i) => {
 });
 
 document.getElementById('lbClose').addEventListener('click', closeLb);
-document.getElementById('lbPrev').addEventListener('click', () => {
-  currentIdx = (currentIdx - 1 + visibleItems.length) % visibleItems.length;
-  lbImg.src = visibleItems[currentIdx].dataset.src;
-});
-document.getElementById('lbNext').addEventListener('click', () => {
-  currentIdx = (currentIdx + 1) % visibleItems.length;
-  lbImg.src = visibleItems[currentIdx].dataset.src;
-});
+document.getElementById('lbPrev').addEventListener('click', prevImg);
+document.getElementById('lbNext').addEventListener('click', nextImg);
 lb.addEventListener('click', e => { if(e.target === lb) closeLb(); });
 document.addEventListener('keydown', e => {
   if(!lb.classList.contains('open')) return;
   if(e.key === 'Escape') closeLb();
-  if(e.key === 'ArrowLeft') document.getElementById('lbPrev').click();
-  if(e.key === 'ArrowRight') document.getElementById('lbNext').click();
+  if(e.key === 'ArrowLeft') prevImg();
+  if(e.key === 'ArrowRight') nextImg();
 });
+
+// Swipe support (touch devices)
+let touchStartX = 0, touchStartY = 0;
+lb.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].clientX;
+  touchStartY = e.changedTouches[0].clientY;
+}, {passive:true});
+lb.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if(Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)){
+    if(dx < 0) nextImg(); else prevImg();
+  } else if(dy > 90 && Math.abs(dy) > Math.abs(dx)){
+    closeLb();
+  }
+}, {passive:true});
 </script>
 </body>
 </html>

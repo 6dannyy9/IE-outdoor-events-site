@@ -15,8 +15,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .nav-links a{text-decoration:none;color:rgba(255,255,255,0.7);font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;transition:color 0.3s;}
 .nav-links a:hover,.nav-links a.active{color:var(--gold);}
 .nav-book{background:var(--gold);color:var(--dark)!important;padding:0.5rem 1.4rem;}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
-.hamburger span{display:block;width:24px;height:1px;background:var(--white);}
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:6px;cursor:pointer;background:none;border:none;padding:6px;width:40px;height:40px;z-index:400;}
+.hamburger span{display:block;width:25px;height:2px;background:var(--white);border-radius:2px;transition:transform 0.35s ease,opacity 0.25s ease;}
+.hamburger.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+.nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);opacity:0;visibility:hidden;transition:opacity 0.35s ease;z-index:250;}
+.nav-overlay.show{opacity:1;visibility:visible;}
+
+/* PAGE TRANSITIONS + SCROLL REVEAL */
+@keyframes pageIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+body{animation:pageIn 0.6s ease both;}
+html.js .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s ease;}
+html.js .reveal.in{opacity:1;transform:none;}
 
 /* HEADER */
 .page-header{padding:9rem 4rem 4rem;background:var(--dark);text-align:center;border-bottom:1px solid rgba(201,168,76,0.2);}
@@ -37,7 +48,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
   display:flex;gap:1.2rem;align-items:flex-start;
   margin-bottom:1.8rem;padding-bottom:1.8rem;
   border-bottom:1px solid rgba(255,255,255,0.07);
+  transition:transform 0.3s;
 }
+.location-detail:hover{transform:translateX(6px);}
+.location-detail:hover .loc-icon{filter:drop-shadow(0 0 8px rgba(201,168,76,0.4));}
 .location-detail:last-child{border-bottom:none;}
 .loc-icon{font-size:1.3rem;flex-shrink:0;margin-top:0.1rem;}
 .loc-text h4{font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;}
@@ -55,10 +69,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .hour-day{
   padding:1.5rem 0.5rem;
   background:var(--cream);border-bottom:3px solid transparent;
-  transition:border-color 0.3s;
+  transition:border-color 0.3s,transform 0.3s,box-shadow 0.3s;
 }
 .hour-day.open{border-bottom-color:var(--gold);}
-.hour-day.closed{opacity:0.4;}
+.hour-day:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.08);border-bottom-color:var(--gold);}
 .day-name{font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:0.5rem;}
 .day-hours{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--dark);}
 .day-hours.closed-text{color:var(--gray);font-size:0.85rem;font-family:'Jost',sans-serif;}
@@ -100,18 +114,39 @@ footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;}
 .footer-links a{color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.78rem;letter-spacing:1px;transition:color 0.3s;}
 .footer-links a:hover{color:var(--gold);}
 
+@media(max-width:1024px){
+  nav{padding:1rem 1.8rem;}
+  /* Slide-out nav */
+  .hamburger{display:flex;}
+  .nav-links{
+    flex-direction:column;align-items:flex-start;position:fixed;
+    top:0;right:0;bottom:0;width:min(320px,82vw);
+    background:var(--dark);padding:6rem 2.2rem 2rem;gap:1.8rem;
+    z-index:300;transform:translateX(100%);
+    transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    box-shadow:-20px 0 60px rgba(0,0,0,0.4);overflow-y:auto;
+  }
+  .nav-links.open{transform:translateX(0);}
+  .nav-links a{font-size:0.95rem;color:rgba(255,255,255,0.85);}
+  .nav-book{padding:0.7rem 1.6rem;}
+}
 @media(max-width:900px){
-  nav{padding:1rem 2rem;}
   .location-split{grid-template-columns:1fr;}
   .hours-grid{grid-template-columns:repeat(4,1fr);}
   .faq-section,.hours-section,.page-header{padding-left:2rem;padding-right:2rem;}
   .location-info{padding:3rem 2rem;}
-  .nav-links{display:none;flex-direction:column;position:fixed;top:0;right:0;bottom:0;width:260px;background:var(--dark);padding:5rem 2rem 2rem;gap:2rem;z-index:300;transform:translateX(100%);transition:transform 0.3s;}
-  .nav-links.open{display:flex;transform:translateX(0);}
-  .hamburger{display:flex;z-index:400;}
   .footer-inner{flex-direction:column;text-align:center;}
 }
+@media(max-width:420px){
+  nav{padding:1rem 1.2rem;}
+  .nav-logo{font-size:1.15rem;letter-spacing:2px;}
+  .hours-grid{grid-template-columns:repeat(2,1fr);}
+  .page-header{padding-left:1.3rem;padding-right:1.3rem;}
+  .hours-section,.faq-section{padding-left:1.3rem;padding-right:1.3rem;}
+  .location-info{padding:2.5rem 1.3rem;}
+}
 </style>
+<script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 <nav>
@@ -123,8 +158,9 @@ footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;}
     <li><a href="location.html" class="active">Location & FAQs</a></li>
     <li><a href="booking.html" class="nav-book">Book Now</a></li>
   </ul>
-  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
+<div class="nav-overlay" id="navOverlay"></div>
 
 <div class="page-header">
   <span class="section-label">Find Us</span>
@@ -172,25 +208,26 @@ footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;}
 </div>
 
 <!-- HOURS -->
-<section class="hours-section">
+<section class="hours-section reveal">
   <span class="section-label">When We're Available</span>
   <h2 class="section-title">Operating<br><em>Hours</em></h2>
+  <p style="color:var(--gray);font-size:0.92rem;margin-top:1rem;max-width:560px;">Open <strong style="color:var(--dark);">7 days a week</strong> — weekdays and weekends. Choose the time that works best for your event.</p>
   <div class="hours-grid">
-    <div class="hour-day closed">
+    <div class="hour-day open">
       <div class="day-name">Mon</div>
-      <div class="day-hours closed-text">Closed</div>
+      <div class="day-hours">6AM–10PM</div>
     </div>
-    <div class="hour-day closed">
+    <div class="hour-day open">
       <div class="day-name">Tue</div>
-      <div class="day-hours closed-text">Closed</div>
+      <div class="day-hours">6AM–10PM</div>
     </div>
-    <div class="hour-day closed">
+    <div class="hour-day open">
       <div class="day-name">Wed</div>
-      <div class="day-hours closed-text">Closed</div>
+      <div class="day-hours">6AM–10PM</div>
     </div>
-    <div class="hour-day closed">
+    <div class="hour-day open">
       <div class="day-name">Thu</div>
-      <div class="day-hours closed-text">Closed</div>
+      <div class="day-hours">6AM–10PM</div>
     </div>
     <div class="hour-day open">
       <div class="day-name">Fri</div>
@@ -208,17 +245,25 @@ footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;}
 </section>
 
 <!-- FAQ -->
-<section class="faq-section">
+<section class="faq-section reveal">
   <span class="section-label">Common Questions</span>
   <h2 class="section-title">Everything You<br><em>Need to Know</em></h2>
   <div class="faq-list">
     <div class="faq-item">
       <button class="faq-question">How do I book the venue?<span class="faq-icon">+</span></button>
-      <div class="faq-answer"><p>You can book directly through our Peerspace listing, send us an email at ie.outdoorevents@gmail.com, or call/text Maria at (562) 413-1124 or Victor at (909) 676-5383. We're happy to walk you through availability and options.</p></div>
+      <div class="faq-answer"><p>The easiest way to book is directly with us — send an email to ie.outdoorevents@gmail.com, or call/text Maria at (562) 413-1124 or Victor at (909) 676-5383. Booking direct gives you the best rate. We're happy to walk you through availability and options.</p></div>
     </div>
     <div class="faq-item">
       <button class="faq-question">What is the minimum booking time?<span class="faq-icon">+</span></button>
-      <div class="faq-answer"><p>The minimum booking is 4 hours at $195/hr. You can extend your booking as needed — just let us know in advance so we can confirm availability.</p></div>
+      <div class="faq-answer"><p>The minimum booking is 4 hours. Weekday rates (Mon–Thu) are $149.99/hour, and weekend rates (Fri–Sun) are $194.99/hour. On weekends, booking 6 or more hours saves $15/hour ($179.99/hour). You can extend your booking as needed — just let us know in advance so we can confirm availability.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Is there a cleaning fee?<span class="faq-icon">+</span></button>
+      <div class="faq-answer"><p>Yes. A mandatory $200 cleaning fee applies to all rentals, every day of the week. This flat fee is disclosed up front and added to every booking. Guests are still expected to remove their personal belongings and leave the venue in a generally tidy condition — additional charges may apply for excessive cleaning or damage beyond normal use.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">What days and hours are you open?<span class="faq-icon">+</span></button>
+      <div class="faq-answer"><p>We're open 7 days a week. Weekdays (Mon–Thu) we're available 6 AM – 10 PM, and weekends (Fri–Sun) we're available 6 AM – 12 AM. Weekday rates are lower, making midweek events a great value.</p></div>
     </div>
     <div class="faq-item">
       <button class="faq-question">Can I bring my own catering or food vendors?<span class="faq-icon">+</span></button>
@@ -226,7 +271,7 @@ footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;}
     </div>
     <div class="faq-item">
       <button class="faq-question">What happens if it rains?<span class="faq-icon">+</span></button>
-      <div class="faq-answer"><p>The venue has a large covered patio that protects a significant portion of the space. For full coverage, we recommend adding the 20×40 canopy as an add-on. The host is not responsible for weather-related issues, so planning ahead is key.</p></div>
+      <div class="faq-answer"><p>The venue has a large covered patio that protects a significant portion of the space. We recommend keeping an eye on the forecast and planning your layout around the covered areas. The host is not responsible for weather-related issues, so planning ahead is key.</p></div>
     </div>
     <div class="faq-item">
       <button class="faq-question">Is alcohol allowed at events?<span class="faq-icon">+</span></button>
@@ -265,9 +310,26 @@ footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;}
 </footer>
 
 <script>
+// Hamburger / slide-out nav
 const ham = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
-ham.addEventListener('click', () => navLinks.classList.toggle('open'));
+const navOverlay = document.getElementById('navOverlay');
+function setNav(open){
+  navLinks.classList.toggle('open', open);
+  ham.classList.toggle('open', open);
+  navOverlay.classList.toggle('show', open);
+  ham.setAttribute('aria-expanded', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+ham.addEventListener('click', () => setNav(!navLinks.classList.contains('open')));
+navOverlay.addEventListener('click', () => setNav(false));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNav(false)));
+
+// Scroll reveal
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 document.querySelectorAll('.faq-question').forEach(btn => {
   btn.addEventListener('click', () => {

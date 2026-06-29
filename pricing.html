@@ -15,8 +15,53 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .nav-links a{text-decoration:none;color:rgba(255,255,255,0.7);font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;transition:color 0.3s;}
 .nav-links a:hover,.nav-links a.active{color:var(--gold);}
 .nav-book{background:var(--gold);color:var(--dark)!important;padding:0.5rem 1.4rem;}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
-.hamburger span{display:block;width:24px;height:1px;background:var(--white);}
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:6px;cursor:pointer;background:none;border:none;padding:6px;width:40px;height:40px;z-index:400;}
+.hamburger span{display:block;width:25px;height:2px;background:var(--white);border-radius:2px;transition:transform 0.35s ease,opacity 0.25s ease;}
+.hamburger.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+.nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);opacity:0;visibility:hidden;transition:opacity 0.35s ease;z-index:250;}
+.nav-overlay.show{opacity:1;visibility:visible;}
+
+/* PAGE TRANSITIONS + SCROLL REVEAL */
+@keyframes pageIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+body{animation:pageIn 0.6s ease both;}
+html.js .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s ease;}
+html.js .reveal.in{opacity:1;transform:none;}
+
+/* RATE CARDS */
+.rates-wrap{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.rate-card{position:relative;border:1px solid rgba(201,168,76,0.3);padding:2.8rem 2rem;text-align:center;background:rgba(255,255,255,0.02);transition:transform 0.3s,border-color 0.3s,box-shadow 0.3s;}
+.rate-card:hover{transform:translateY(-5px);border-color:var(--gold);box-shadow:0 18px 44px rgba(0,0,0,0.35);}
+.rate-card.featured{border-color:var(--gold);background:rgba(201,168,76,0.07);}
+.rate-tag{display:inline-block;background:var(--gold);color:var(--dark);font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;padding:0.35rem 1rem;font-weight:600;margin-bottom:1.2rem;}
+.rate-days{font-size:0.76rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:0.6rem;}
+.rate-amount{font-family:'Cormorant Garamond',serif;font-size:3.8rem;font-weight:300;color:var(--white);line-height:1;}
+.rate-cents{font-size:1.5rem;vertical-align:super;color:rgba(255,255,255,0.65);}
+.rate-unit{font-size:1.05rem;color:var(--gold);font-family:'Cormorant Garamond',serif;}
+.rate-hours{font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:0.9rem;}
+.rate-perk{margin-top:1.3rem;padding-top:1.2rem;border-top:1px solid rgba(201,168,76,0.25);font-size:0.84rem;color:var(--gold-light);letter-spacing:0.3px;line-height:1.55;}
+.rate-perk strong{color:var(--gold);font-weight:600;}
+.rate-disclosure{max-width:900px;margin:1.8rem auto 0;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;}
+.disc-item{display:flex;align-items:center;gap:0.6rem;font-size:0.84rem;color:rgba(255,255,255,0.65);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);padding:0.75rem 1.3rem;}
+.disc-item strong{color:var(--gold);font-weight:600;}
+.pricing-cta{text-align:center;margin-top:2.5rem;}
+
+/* T-CHART COMPARISON */
+.tchart{display:grid;grid-template-columns:1fr 1fr;margin-top:3rem;border:1px solid rgba(201,168,76,0.25);background:var(--white);box-shadow:0 10px 40px rgba(0,0,0,0.05);}
+.tcol{padding:2.5rem 2rem;}
+.tcol-included{border-right:1px solid rgba(201,168,76,0.25);}
+.tcol-head{text-align:center;padding-bottom:1.5rem;margin-bottom:1.2rem;border-bottom:2px solid var(--gold);}
+.tcol-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--dark);font-size:1.3rem;margin-bottom:0.8rem;font-weight:600;}
+.tcol-addons .tcol-icon{background:var(--dark);color:var(--gold);}
+.tcol-head h3{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--dark);}
+.tcol-head p{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-top:0.4rem;}
+.tlist{list-style:none;display:flex;flex-direction:column;gap:0.3rem;}
+.tlist li{display:flex;gap:0.9rem;align-items:flex-start;padding:0.7rem 0.8rem;border-radius:5px;transition:background 0.25s;}
+.tlist li:hover{background:rgba(201,168,76,0.08);}
+.tlist li>span{font-size:1.15rem;flex-shrink:0;line-height:1.4;}
+.tlist li strong{display:block;font-size:0.92rem;font-weight:500;color:var(--dark);letter-spacing:0.3px;}
+.tlist li em{display:block;font-size:0.78rem;color:var(--gray);font-style:normal;margin-top:0.15rem;line-height:1.45;}
 
 /* PAGE HEADER */
 .page-header{
@@ -133,25 +178,45 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 }
 .rule-item:hover{border-top-color:var(--gold);}
 .rule-icon{font-size:1.2rem;flex-shrink:0;}
-.rule-text{font-size:0.88rem;color:var(--charcoal);line-height:1.6;}
+.rule-text{font-size:0.92rem;color:var(--charcoal);line-height:1.6;}
 
 /* FOOTER */
 footer{background:#111;padding:2rem 4rem;border-top:1px solid rgba(201,168,76,0.1);text-align:center;}
 footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;}
 footer a{color:var(--gold);text-decoration:none;}
 
+@media(max-width:1024px){
+  nav{padding:1rem 1.8rem;}
+  .hamburger{display:flex;}
+  .nav-links{
+    flex-direction:column;align-items:flex-start;position:fixed;
+    top:0;right:0;bottom:0;width:min(320px,82vw);
+    background:var(--dark);padding:6rem 2.2rem 2rem;gap:1.8rem;
+    z-index:300;transform:translateX(100%);
+    transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    box-shadow:-20px 0 60px rgba(0,0,0,0.4);overflow-y:auto;
+  }
+  .nav-links.open{transform:translateX(0);}
+  .nav-links a{font-size:0.95rem;color:rgba(255,255,255,0.85);}
+}
 @media(max-width:900px){
-  nav{padding:1rem 2rem;}
   .amenities-section,.addons-section,.rules-section{padding:4rem 2rem;}
   .pricing-hero{padding:3rem 2rem;}
-  .price-card{padding:2.5rem 1.5rem;}
   .page-header{padding:7rem 2rem 3rem;}
   .rules-grid{grid-template-columns:1fr;}
-  .nav-links{display:none;flex-direction:column;position:fixed;top:0;right:0;bottom:0;width:260px;background:var(--dark);padding:5rem 2rem 2rem;gap:2rem;z-index:300;transform:translateX(100%);transition:transform 0.3s;}
-  .nav-links.open{display:flex;transform:translateX(0);}
-  .hamburger{display:flex;z-index:400;}
+}
+@media(max-width:768px){
+  .rates-wrap{grid-template-columns:1fr;}
+  .tchart{grid-template-columns:1fr;}
+  .tcol-included{border-right:none;border-bottom:1px solid rgba(201,168,76,0.25);}
+}
+@media(max-width:420px){
+  nav{padding:1rem 1.2rem;}
+  .nav-logo{font-size:1.15rem;letter-spacing:2px;}
+  .rate-amount{font-size:3rem;}
 }
 </style>
+<script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 
@@ -164,168 +229,101 @@ footer a{color:var(--gold);text-decoration:none;}
     <li><a href="location.html">Location & FAQs</a></li>
     <li><a href="booking.html" class="nav-book">Book Now</a></li>
   </ul>
-  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
+<div class="nav-overlay" id="navOverlay"></div>
 
 <div class="page-header">
   <div class="page-header-bg"></div>
   <div class="page-header-content">
-    <span class="section-label">Transparent Pricing</span>
-    <h1>What's Included &<br><em>What You Can Add</em></h1>
-    <p>No hidden fees · Call or text for add-on pricing</p>
+    <span class="section-label">Pricing</span>
+    <h1><em>Pricing</em></h1>
+    <p>Open 7 days a week · Transparent rates · No hidden fees</p>
   </div>
 </div>
 
-<!-- PRICE CARD -->
+<!-- RATES -->
 <div class="pricing-hero">
-  <div class="price-card">
-    <span class="price-badge">Base Rate</span>
-    <div class="price-amount">$195<span class="price-unit">/hr</span></div>
-    <div class="price-min">4 Hour Minimum · Fri–Sun Only</div>
-    <div class="price-divider"></div>
-    <div class="price-perks">
-      <div class="price-perk">Up to 150 guests</div>
-      <div class="price-perk">3,400 sq ft space</div>
-      <div class="price-perk">2 private restrooms</div>
-      <div class="price-perk">Covered patio</div>
-      <div class="price-perk">Fridge + coolers</div>
-      <div class="price-perk">Flat screen TV</div>
-      <div class="price-perk">Ceiling fans</div>
-      <div class="price-perk">Host available on-site</div>
+  <div style="width:100%;">
+    <div class="rates-wrap">
+      <div class="rate-card">
+        <span class="rate-tag">Weekday</span>
+        <div class="rate-days">Mon – Thu</div>
+        <div class="rate-amount">$149<span class="rate-cents">.99</span><span class="rate-unit">/hr</span></div>
+        <div class="rate-hours">6 AM – 10 PM</div>
+        <div class="rate-perk">Our <strong>lowest rate of the week</strong> — perfect for showers, meetings & intimate gatherings.</div>
+      </div>
+      <div class="rate-card featured">
+        <span class="rate-tag">Weekend</span>
+        <div class="rate-days">Fri – Sun</div>
+        <div class="rate-amount">$194<span class="rate-cents">.99</span><span class="rate-unit">/hr</span></div>
+        <div class="rate-hours">6 AM – 12 AM</div>
+        <div class="rate-perk">Book <strong>6+ hours</strong> and save <strong>$15/hr</strong> → just <strong>$179.99/hr</strong>. Weekends only.</div>
+      </div>
     </div>
-    <a href="booking.html" class="btn-primary">Check Availability</a>
+    <div class="rate-disclosure">
+      <div class="disc-item"><span>⏱️</span><span><strong>4-hour minimum</strong> on all bookings</span></div>
+      <div class="disc-item"><span>🧹</span><span>A mandatory <strong>$200 cleaning fee</strong> applies to all rentals</span></div>
+      <div class="disc-item"><span>🗓️</span><span><strong>Open 7 days</strong> a week</span></div>
+    </div>
+    <div class="pricing-cta">
+      <a href="booking.html" class="btn-primary">Check Availability</a>
+    </div>
   </div>
 </div>
 
-<!-- INCLUDED AMENITIES -->
-<section class="amenities-section">
-  <span class="section-label">All Included at No Extra Cost</span>
+<!-- T-CHART: INCLUDED vs ADD-ONS -->
+<section class="amenities-section reveal">
+  <span class="section-label">What's Included &amp; What You Can Add</span>
   <h2 class="section-title">Everything You<br><em>Need is Already Here</em></h2>
-  <div class="included-grid">
-    <div class="amenity-card">
-      <span class="amenity-icon">🏛️</span>
-      <div class="amenity-info">
-        <h4>Covered Patio</h4>
-        <p>Large covered area with recessed lighting and ceiling fans — perfect for shade or light rain.</p>
+  <div class="tchart">
+    <div class="tcol tcol-included">
+      <div class="tcol-head">
+        <span class="tcol-icon">✓</span>
+        <h3>Included in Rental</h3>
+        <p>Free with every booking</p>
       </div>
+      <ul class="tlist">
+        <li><span>🏛️</span><div><strong>Covered Patio</strong><em>Recessed lighting &amp; ceiling fans — shade or light rain.</em></div></li>
+        <li><span>🚻</span><div><strong>2 Private Restrooms</strong><em>Modern, fully-tiled, clean &amp; stocked.</em></div></li>
+        <li><span>💡</span><div><strong>String Lights</strong><em>Overhead lighting for a warm evening ambiance.</em></div></li>
+        <li><span>📺</span><div><strong>Flat Screen TV</strong><em>Wall-mounted on the covered patio.</em></div></li>
+        <li><span>🌡️</span><div><strong>Ceiling Fans</strong><em>Keeps guests cool under the patio.</em></div></li>
+        <li><span>🧊</span><div><strong>Refrigerator + 2 Coolers</strong><em>Full-size fridge plus two large coolers.</em></div></li>
+        <li><span>🛋️</span><div><strong>Patio Lounge Seating</strong><em>Wicker lounge set with coffee tables &amp; fire pit.</em></div></li>
+        <li><span>🌴</span><div><strong>Outdoor Space + Landscaping</strong><em>Palm trees, grass &amp; clean concrete — 3,400 sq ft.</em></div></li>
+      </ul>
     </div>
-    <div class="amenity-card">
-      <span class="amenity-icon">🚻</span>
-      <div class="amenity-info">
-        <h4>2 Private Restrooms</h4>
-        <p>Two modern, fully-tiled private restrooms on property — clean and stocked for your event.</p>
+    <div class="tcol tcol-addons">
+      <div class="tcol-head">
+        <span class="tcol-icon">+</span>
+        <h3>Additional Add-Ons</h3>
+        <p>Customize — call for pricing</p>
       </div>
-    </div>
-    <div class="amenity-card">
-      <span class="amenity-icon">💡</span>
-      <div class="amenity-info">
-        <h4>String Light Canopy</h4>
-        <p>Overhead string lights across the full outdoor area for the perfect warm evening ambiance.</p>
-      </div>
-    </div>
-    <div class="amenity-card">
-      <span class="amenity-icon">📺</span>
-      <div class="amenity-info">
-        <h4>Flat Screen TV</h4>
-        <p>Large wall-mounted flat screen TV on the covered patio. Great for slideshows, sports, or presentations.</p>
-      </div>
-    </div>
-    <div class="amenity-card">
-      <span class="amenity-icon">🌡️</span>
-      <div class="amenity-info">
-        <h4>Ceiling Fans</h4>
-        <p>Multiple ceiling fans under the covered patio to keep your guests cool and comfortable all day.</p>
-      </div>
-    </div>
-    <div class="amenity-card">
-      <span class="amenity-icon">🧊</span>
-      <div class="amenity-info">
-        <h4>Refrigerator + 2 Coolers</h4>
-        <p>Full-size commercial refrigerator and two large coolers included for all your beverage needs.</p>
-      </div>
-    </div>
-    <div class="amenity-card">
-      <span class="amenity-icon">🛋️</span>
-      <div class="amenity-info">
-        <h4>Patio Lounge Seating</h4>
-        <p>Wicker lounge furniture set with coffee tables and fire pit — a built-in VIP lounge area.</p>
-      </div>
-    </div>
-    <div class="amenity-card">
-      <span class="amenity-icon">🌴</span>
-      <div class="amenity-info">
-        <h4>Outdoor Space + Landscaping</h4>
-        <p>Manicured yard with palm trees, grass area, flowers, and clean concrete across 3,400 sq ft.</p>
-      </div>
+      <ul class="tlist">
+        <li><span>🪑</span><div><strong>20 Banquet Tables</strong><em>Setup not included.</em></div></li>
+        <li><span>💺</span><div><strong>150 Chairs</strong><em>Setup not included.</em></div></li>
+        <li><span>🎀</span><div><strong>150 Stretch Chair Covers</strong><em>White · elegant finish.</em></div></li>
+        <li><span>🍸</span><div><strong>2 Cocktail Tables</strong><em>With white covers.</em></div></li>
+        <li><span>🔊</span><div><strong>PA Speaker System</strong><em>2×15" speakers, stands &amp; microphone.</em></div></li>
+        <li><span>🔥</span><div><strong>2 Outdoor Heaters</strong><em>Perfect for cooler evenings.</em></div></li>
+        <li><span>🌿</span><div><strong>Wood Arch Backdrop</strong><em>Ideal for ceremonies &amp; photos.</em></div></li>
+        <li><span>🏺</span><div><strong>16 Gold Vase Centerpieces</strong><em>With white &amp; pink flowers.</em></div></li>
+        <li><span>🍽️</span><div><strong>150 Gold Charger Plates</strong><em>Elegant gold rim chargers.</em></div></li>
+        <li><span>🍲</span><div><strong>3 Food Warmers / Chafers</strong><em>Heat flame sold separately.</em></div></li>
+        <li><span>🧁</span><div><strong>2 Cupcake Stands w/ Lights</strong><em>4-tier · illuminated display.</em></div></li>
+        <li><span>🪵</span><div><strong>Fire Pit</strong><em>Outdoor fire pit for evening ambiance.</em></div></li>
+      </ul>
     </div>
   </div>
-</section>
-
-<!-- ADD-ONS -->
-<section class="addons-section">
-  <div style="max-width:1300px;margin:0 auto;">
-    <span class="section-label">Optional Add-Ons</span>
-    <h2 class="section-title">Enhance Your Event</h2>
-    <p class="addons-intro">Customize your booking with our available add-ons. Contact Maria or Victor directly for current pricing — (562) 413-1124 or (909) 676-5383.</p>
-    <div class="addons-grid">
-      <div class="addon-item">
-        <div><div class="addon-name">20 Banquet Tables</div><div class="addon-note">Setup not included</div></div>
-        <div class="addon-price">Call for pricing</div>
-      </div>
-      <div class="addon-item">
-        <div><div class="addon-name">150 Chairs</div><div class="addon-note">Setup not included</div></div>
-        <div class="addon-price">Call for pricing</div>
-      </div>
-      <div class="addon-item">
-        <div><div class="addon-name">150 Stretch Chair Covers</div><div class="addon-note">White · elegant finish</div></div>
-        <div class="addon-price">Call for pricing</div>
-      </div>
-      <div class="addon-item">
-        <div><div class="addon-name">2 Cocktail Tables</div><div class="addon-note">With white covers</div></div>
-        <div class="addon-price">Call for pricing</div>
-      </div>
-      <div class="addon-item">
-        <div><div class="addon-name">PA Speaker System</div><div class="addon-note">2×15" speakers, stands & microphone</div></div>
-        <div class="addon-price">Call for pricing</div>
-      </div>
-      <div class="addon-item">
-        <div><div class="addon-name">2 Outdoor Heaters</div><div class="addon-note">Perfect for cooler evenings</div></div>
-        <div class="addon-price">Call for pricing</div>
-      </div>
-      <div class="addon-item">
-        <div><div class="addon-name">Wood Arch Backdrop</div><div class="addon-note">Ideal for ceremonies & photos</div></div>
-        <div class="addon-price">Call for pricing</div>
-      </div>
-      <div class="addon-item">
-        <div><div class="addon-name">16 Gold Vase Centerpieces</div><div class="addon-note">With white & pink flowers</div></div>
-        <div class="addon-price">Call for pricing</div>
-      </div>
-      <div class="addon-item">
-        <div><div class="addon-name">150 Gold Charger Plates</div><div class="addon-note">Elegant gold rim chargers</div></div>
-        <div class="addon-price">Call for pricing</div>
-      </div>
-      <div class="addon-item">
-        <div><div class="addon-name">3 Food Warmers / Chafers</div><div class="addon-note">Heat flame sold separately</div></div>
-        <div class="addon-price">Call for pricing</div>
-      </div>
-      <div class="addon-item">
-        <div><div class="addon-name">2 Cupcake Stands w/ Lights</div><div class="addon-note">4-tier · illuminated display</div></div>
-        <div class="addon-price">Call for pricing</div>
-      </div>
-      <div class="addon-item">
-        <div><div class="addon-name">Fire Pit</div><div class="addon-note">Outdoor fire pit for evening ambiance</div></div>
-        <div class="addon-price">Call for pricing</div>
-      </div>
-    </div>
-    <div class="addons-cta">
-      <p>Questions about add-ons? Text or call us directly — we'll build a custom package for your event.</p>
-      <a href="booking.html" class="btn-outline">Contact Us for Pricing</a>
-    </div>
+  <div class="addons-cta" style="text-align:center;margin-top:2.5rem;">
+    <p style="color:var(--gray);margin-bottom:1.5rem;font-size:0.9rem;letter-spacing:0.5px;">Questions about add-ons? Text or call us directly — we'll build a custom package for your event. (562) 413-1124 or (909) 676-5383.</p>
+    <a href="booking.html" class="btn-outline">Contact Us for Pricing</a>
   </div>
 </section>
 
 <!-- RULES -->
-<section class="rules-section">
+<section class="rules-section reveal">
   <span class="section-label">House Rules</span>
   <h2 class="section-title">A Few Things<br><em>to Know</em></h2>
   <div class="rules-grid">
@@ -335,7 +333,11 @@ footer a{color:var(--gold);text-decoration:none;}
     </div>
     <div class="rule-item">
       <span class="rule-icon">🧹</span>
-      <p class="rule-text">The venue must be left as found. A cleaning fee add-on is available if preferred.</p>
+      <p class="rule-text">A mandatory <strong>$200 cleaning fee</strong> applies to all rentals, every day of the week.</p>
+    </div>
+    <div class="rule-item">
+      <span class="rule-icon">✨</span>
+      <p class="rule-text">Guests are expected to remove their personal belongings and leave the venue in a generally tidy condition. Additional charges may apply for excessive cleaning or damage beyond normal use.</p>
     </div>
     <div class="rule-item">
       <span class="rule-icon">🌮</span>
@@ -364,7 +366,22 @@ footer a{color:var(--gold);text-decoration:none;}
 <script>
 const ham = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
-ham.addEventListener('click', () => navLinks.classList.toggle('open'));
+const navOverlay = document.getElementById('navOverlay');
+function setNav(open){
+  navLinks.classList.toggle('open', open);
+  ham.classList.toggle('open', open);
+  navOverlay.classList.toggle('show', open);
+  ham.setAttribute('aria-expanded', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+ham.addEventListener('click', () => setNav(!navLinks.classList.contains('open')));
+navOverlay.addEventListener('click', () => setNav(false));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNav(false)));
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 </body>
 </html>

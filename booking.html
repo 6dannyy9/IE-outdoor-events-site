@@ -15,8 +15,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .nav-links a{text-decoration:none;color:rgba(255,255,255,0.7);font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;transition:color 0.3s;}
 .nav-links a:hover,.nav-links a.active{color:var(--gold);}
 .nav-book{background:var(--gold);color:var(--dark)!important;padding:0.5rem 1.4rem;}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
-.hamburger span{display:block;width:24px;height:1px;background:var(--white);}
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:6px;cursor:pointer;background:none;border:none;padding:6px;width:40px;height:40px;z-index:400;}
+.hamburger span{display:block;width:25px;height:2px;background:var(--white);border-radius:2px;transition:transform 0.35s ease,opacity 0.25s ease;}
+.hamburger.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+.nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);opacity:0;visibility:hidden;transition:opacity 0.35s ease;z-index:250;}
+.nav-overlay.show{opacity:1;visibility:visible;}
+
+/* PAGE TRANSITIONS + SCROLL REVEAL */
+@keyframes pageIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+body{animation:pageIn 0.6s ease both;}
+html.js .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.8s ease,transform 0.8s ease;}
+html.js .reveal.in{opacity:1;transform:none;}
 
 /* HERO */
 .book-hero{
@@ -45,10 +56,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
   background:var(--charcoal);
   padding:3.5rem 2.5rem;
   text-align:center;
-  transition:background 0.3s;
+  transition:background 0.3s,transform 0.3s,box-shadow 0.3s;
   display:flex;flex-direction:column;align-items:center;
 }
-.booking-card:hover{background:#353535;}
+.booking-card:hover{background:#353535;transform:translateY(-5px);box-shadow:0 18px 40px rgba(0,0,0,0.3);}
+.booking-card.featured:hover{background:#fff;}
 .booking-card.featured{background:var(--white);position:relative;}
 .booking-card.featured::before{
   content:'RECOMMENDED';
@@ -134,7 +146,24 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
   border-bottom:1px solid rgba(201,168,76,0.2);
 }
 .direct-inner{max-width:800px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
-.contact-person{padding:2.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.2);}
+.contact-person{padding:2.5rem;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.2);transition:transform 0.3s,border-color 0.3s,box-shadow 0.3s;}
+.contact-person:hover{transform:translateY(-5px);border-color:var(--gold);box-shadow:0 16px 36px rgba(0,0,0,0.3);}
+
+/* DISCLOSURE BOX */
+.disclosure-box{
+  max-width:800px;margin:3rem auto 0;
+  background:rgba(201,168,76,0.07);
+  border:1px solid rgba(201,168,76,0.28);
+  border-left:3px solid var(--gold);
+  padding:1.8rem 2rem;
+}
+.disclosure-box h4{
+  font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.9rem;
+}
+.disclosure-box p{color:rgba(255,255,255,0.6);font-size:0.86rem;line-height:1.8;margin-bottom:0.7rem;}
+.disclosure-box p:last-child{margin-bottom:0;}
+.disclosure-box strong{color:var(--white);}
 .contact-person h4{
   font-family:'Cormorant Garamond',serif;
   font-size:1.5rem;color:var(--white);margin-bottom:0.3rem;font-weight:400;
@@ -154,18 +183,37 @@ footer{background:#111;padding:3rem 4rem;border-top:1px solid rgba(201,168,76,0.
 footer p{color:rgba(255,255,255,0.25);font-size:0.78rem;letter-spacing:1px;}
 footer a{color:var(--gold);text-decoration:none;}
 
+@media(max-width:1024px){
+  nav{padding:1rem 1.8rem;}
+  /* Slide-out nav */
+  .hamburger{display:flex;}
+  .nav-links{
+    flex-direction:column;align-items:flex-start;position:fixed;
+    top:0;right:0;bottom:0;width:min(320px,82vw);
+    background:var(--dark);padding:6rem 2.2rem 2rem;gap:1.8rem;
+    z-index:300;transform:translateX(100%);
+    transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    box-shadow:-20px 0 60px rgba(0,0,0,0.4);overflow-y:auto;
+  }
+  .nav-links.open{transform:translateX(0);}
+  .nav-links a{font-size:0.95rem;color:rgba(255,255,255,0.85);}
+  .nav-book{padding:0.7rem 1.6rem;}
+}
 @media(max-width:900px){
-  nav{padding:1rem 2rem;}
   .booking-options{grid-template-columns:1fr;padding:3rem 2rem;}
   .form-grid{grid-template-columns:1fr;}
   .form-group.full{grid-column:1;}
   .direct-inner{grid-template-columns:1fr;}
   .book-hero,.contact-section,.direct-contact{padding-left:2rem;padding-right:2rem;}
-  .nav-links{display:none;flex-direction:column;position:fixed;top:0;right:0;bottom:0;width:260px;background:var(--dark);padding:5rem 2rem 2rem;gap:2rem;z-index:300;transform:translateX(100%);transition:transform 0.3s;}
-  .nav-links.open{display:flex;transform:translateX(0);}
-  .hamburger{display:flex;z-index:400;}
+}
+@media(max-width:420px){
+  nav{padding:1rem 1.2rem;}
+  .nav-logo{font-size:1.15rem;letter-spacing:2px;}
+  .booking-card{padding:2.8rem 1.6rem;}
+  .contact-person{padding:2rem 1.4rem;}
 }
 </style>
+<script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 <nav>
@@ -177,8 +225,9 @@ footer a{color:var(--gold);text-decoration:none;}
     <li><a href="location.html">Location & FAQs</a></li>
     <li><a href="booking.html" class="nav-book active">Book Now</a></li>
   </ul>
-  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
+<div class="nav-overlay" id="navOverlay"></div>
 
 <!-- HERO -->
 <div class="book-hero">
@@ -186,7 +235,7 @@ footer a{color:var(--gold);text-decoration:none;}
   <div class="book-hero-content">
     <span class="section-label">Let's Make It Happen</span>
     <h1>Reserve Your<br><em>Perfect Date</em></h1>
-    <p>Three easy ways to book — choose whichever works best for you. Dates go fast on weekends.</p>
+    <p>Booking directly with us is the easiest way and gets you the best rate. Fill out the form or reach out by phone — dates fill fast on weekends, so reach out early.</p>
   </div>
 </div>
 
@@ -214,15 +263,24 @@ footer a{color:var(--gold);text-decoration:none;}
 
   <div class="booking-card">
     <div class="card-icon">📱</div>
-    <h3>Or Book on Peerspace</h3>
-    <p>Secure, instant booking through Peerspace. See live availability, manage your booking, and pay safely through their platform.</p>
-    <a href="https://www.peerspace.com/pages/listings/6420feabf9d022000ebd53bc" target="_blank" class="btn-book btn-outline-dark">Book on Peerspace →</a>
+    <h3>Peerspace</h3>
+    <p>Also available on Peerspace at $220/hour, plus their additional service fees. Their rates and terms apply, so booking direct above is the better value.</p>
+    <a href="https://www.peerspace.com/pages/listings/6420feabf9d022000ebd53bc" target="_blank" class="btn-book btn-outline-dark">View Peerspace Listing →</a>
   </div>
 
 </div>
 
+<!-- BOOKING DISCLOSURE -->
+<div style="background:var(--dark);padding:0 4rem 1rem;">
+  <div class="disclosure-box reveal">
+    <h4>Before You Book — Please Note</h4>
+    <p>A mandatory <strong>$200 cleaning fee</strong> applies to all rentals, every day of the week. This flat fee is added to every booking and is disclosed here up front. A <strong>4-hour minimum</strong> applies. Weekday rates (Mon–Thu) are <strong>$149.99/hour</strong>; weekend rates (Fri–Sun) are <strong>$194.99/hour</strong>.</p>
+    <p>Guests are expected to remove their personal belongings and leave the venue in a generally tidy condition. Additional charges may apply for excessive cleaning or damage beyond normal use.</p>
+  </div>
+</div>
+
 <!-- CONTACT FORM -->
-<section class="contact-section" id="contact-form">
+<section class="contact-section reveal" id="contact-form">
   <span class="section-label">Send a Message</span>
   <h2>Tell Us About<br><em>Your Event</em></h2>
   <p>Fill this out and we'll reach back within 24 hours to confirm availability and next steps. No commitment required.</p>
@@ -276,11 +334,11 @@ footer a{color:var(--gold);text-decoration:none;}
     </div>
   </div>
   <button class="form-submit" onclick="handleSubmit()">Send My Inquiry</button>
-  <p class="form-note">We'll respond within 24 hours. Prefer instant booking? Use the Peerspace link above.</p>
+  <p class="form-note">We'll respond within 24 hours. A mandatory $200 cleaning fee applies to all rentals and is added to every booking.</p>
 </section>
 
 <!-- DIRECT CONTACT -->
-<div class="direct-contact">
+<div class="direct-contact reveal">
   <div style="text-align:center;margin-bottom:2rem;">
     <span class="section-label">Or Reach Us Directly</span>
   </div>
@@ -303,15 +361,31 @@ footer a{color:var(--gold);text-decoration:none;}
 </div>
 
 <footer>
-  <p>© 2025 I.E Outdoor Events · Rialto, CA · Victor & Maria T.<br>
-  <a href="https://www.peerspace.com/pages/listings/6420feabf9d022000ebd53bc" target="_blank">View on Peerspace</a></p>
+  <p>© 2025 I.E Outdoor Events · Rialto, CA · Victor & Maria T.</p>
   <p style="margin-top: 0.5rem; font-size: 0.7rem; color: rgba(255,255,255,0.15);">Website Design by <a href="https://www.ovcelevatedmarketing.com" style="color: var(--gold); text-decoration: none;">OVC Elevated Marketing</a></p>
 </footer>
 
 <script>
+// Hamburger / slide-out nav
 const ham = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
-ham.addEventListener('click', () => navLinks.classList.toggle('open'));
+const navOverlay = document.getElementById('navOverlay');
+function setNav(open){
+  navLinks.classList.toggle('open', open);
+  ham.classList.toggle('open', open);
+  navOverlay.classList.toggle('show', open);
+  ham.setAttribute('aria-expanded', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+ham.addEventListener('click', () => setNav(!navLinks.classList.contains('open')));
+navOverlay.addEventListener('click', () => setNav(false));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNav(false)));
+
+// Scroll reveal
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+}, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 function handleSubmit() {
   const btn = document.querySelector('.form-submit');
