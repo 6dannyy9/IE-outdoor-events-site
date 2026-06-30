@@ -9,7 +9,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--gold:#C9A84C;--gold-light:#E8D5A3;--dark:#1A1A1A;--charcoal:#2E2E2E;--cream:#FAF8F4;--white:#FFFFFF;--gray:#888;}
 body{font-family:'Jost',sans-serif;color:var(--dark);background:var(--cream);}
-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 4rem;background:rgba(26,26,26,0.97);border-bottom:1px solid rgba(201,168,76,0.2);}
+nav{position:fixed;top:0;left:0;right:0;z-index:600;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 4rem;background:rgba(26,26,26,0.97);border-bottom:1px solid rgba(201,168,76,0.2);}
 .nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;letter-spacing:3px;color:var(--gold);text-decoration:none;}
 .nav-links{display:flex;gap:2.5rem;list-style:none;}
 .nav-links a{text-decoration:none;color:rgba(255,255,255,0.7);font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;transition:color 0.3s;}
@@ -35,15 +35,15 @@ html.js .reveal.in{opacity:1;transform:none;}
 .rate-card:hover{transform:translateY(-5px);border-color:var(--gold);box-shadow:0 18px 44px rgba(0,0,0,0.35);}
 .rate-card.featured{border-color:var(--gold);background:rgba(201,168,76,0.07);}
 .rate-tag{display:inline-block;background:var(--gold);color:var(--dark);font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;padding:0.35rem 1rem;font-weight:600;margin-bottom:1.2rem;}
-.rate-days{font-size:0.76rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:0.6rem;}
-.rate-amount{font-family:'Cormorant Garamond',serif;font-size:3.8rem;font-weight:300;color:var(--white);line-height:1;}
-.rate-cents{font-size:1.5rem;vertical-align:super;color:rgba(255,255,255,0.65);}
-.rate-unit{font-size:1.05rem;color:var(--gold);font-family:'Cormorant Garamond',serif;}
-.rate-hours{font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:0.9rem;}
+.rate-days{font-size:0.76rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.92);margin-bottom:0.6rem;}
+.rate-amount{font-family:'Jost',sans-serif;font-size:3.7rem;font-weight:300;color:var(--white);line-height:1;font-feature-settings:"lnum" 1;letter-spacing:-1px;}
+.rate-cents{font-size:1.4rem;vertical-align:super;color:rgba(255,255,255,0.92);font-family:'Jost',sans-serif;font-feature-settings:"lnum" 1;}
+.rate-unit{font-size:1.05rem;color:var(--gold);font-family:'Jost',sans-serif;font-weight:300;}
+.rate-hours{font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.92);margin-top:0.9rem;}
 .rate-perk{margin-top:1.3rem;padding-top:1.2rem;border-top:1px solid rgba(201,168,76,0.25);font-size:0.84rem;color:var(--gold-light);letter-spacing:0.3px;line-height:1.55;}
 .rate-perk strong{color:var(--gold);font-weight:600;}
 .rate-disclosure{max-width:900px;margin:1.8rem auto 0;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;}
-.disc-item{display:flex;align-items:center;gap:0.6rem;font-size:0.84rem;color:rgba(255,255,255,0.65);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);padding:0.75rem 1.3rem;}
+.disc-item{display:flex;align-items:center;gap:0.6rem;font-size:0.84rem;color:rgba(255,255,255,0.92);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);padding:0.75rem 1.3rem;}
 .disc-item strong{color:var(--gold);font-weight:600;}
 .pricing-cta{text-align:center;margin-top:2.5rem;}
 
@@ -192,12 +192,12 @@ footer a{color:var(--gold);text-decoration:none;}
     flex-direction:column;align-items:flex-start;position:fixed;
     top:0;right:0;bottom:0;width:min(320px,82vw);
     background:var(--dark);padding:6rem 2.2rem 2rem;gap:1.8rem;
-    z-index:300;transform:translateX(100%);
+    z-index:500;transform:translateX(100%);
     transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
     box-shadow:-20px 0 60px rgba(0,0,0,0.4);overflow-y:auto;
   }
   .nav-links.open{transform:translateX(0);}
-  .nav-links a{font-size:0.95rem;color:rgba(255,255,255,0.85);}
+  .nav-links a{font-size:0.95rem;color:rgba(255,255,255,0.85);display:flex;align-items:center;min-height:44px;}
 }
 @media(max-width:900px){
   .amenities-section,.addons-section,.rules-section{padding:4rem 2rem;}
@@ -257,7 +257,7 @@ footer a{color:var(--gold);text-decoration:none;}
         <span class="rate-tag">Weekend</span>
         <div class="rate-days">Fri – Sun</div>
         <div class="rate-amount">$194<span class="rate-cents">.99</span><span class="rate-unit">/hr</span></div>
-        <div class="rate-hours">6 AM – 12 AM</div>
+        <div class="rate-hours">6 AM – 11:30 PM</div>
         <div class="rate-perk">Book <strong>6+ hours</strong> and save <strong>$15/hr</strong> → just <strong>$179.99/hr</strong>. Weekends only.</div>
       </div>
     </div>
@@ -359,6 +359,8 @@ footer a{color:var(--gold);text-decoration:none;}
 </section>
 
 <footer>
+  <p style="color:var(--gold);font-size:0.68rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.6rem;">Open 7 Days a Week</p>
+  <p style="color:rgba(255,255,255,0.45);font-size:0.8rem;line-height:1.8;margin-bottom:1.4rem;">Mon – Thu · 6 AM – 10 PM &nbsp;·&nbsp; Fri – Sun · 6 AM – 11:30 PM</p>
   <p>© 2025 I.E Outdoor Events · Rialto, CA · <a href="booking.html">Book Now</a></p>
   <p style="margin-top: 0.5rem; font-size: 0.7rem; color: rgba(255,255,255,0.15);">Website Design by <a href="https://www.ovcelevatedmarketing.com" style="color: var(--gold); text-decoration: none;">OVC Elevated Marketing</a></p>
 </footer>
